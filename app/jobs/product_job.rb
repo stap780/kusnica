@@ -1,7 +1,7 @@
-class ProductJob < ActiveJob::Base
+class ImportProductJob < ActiveJob::Base
   queue_as :default
 
-  def xml_import
+  def perform
     Services::ImportProduct.xml_import
   end
 
