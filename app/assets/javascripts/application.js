@@ -1,0 +1,78 @@
+// This is a manifest file that'll be compiled into application.js, which will include all the files
+// listed below.
+//
+// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, or any plugin's
+// vendor/assets/javascripts directory can be referenced here using a relative path.
+//
+// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
+// compiled file. JavaScript code in this file should be added after the last require_* statement.
+//
+// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
+// about supported directives.
+//
+
+//= require jquery
+//= require jquery_ujs
+//= require popper
+//= require bootstrap
+//= require cocoon
+//= require_tree .
+
+
+
+$(document).ready(function() {
+
+  $(".alert").delay(4000).slideUp(200, function() {
+    $(this).alert('close');
+  });
+
+  // SELECT ALL //
+  $('#selectAll').click(function() {
+    if (this.checked) {
+      $(':checkbox').each(function() {
+        this.checked = true;
+      });
+      $('#deleteAll').show();
+    } else {
+      $(':checkbox').each(function() {
+        this.checked = false;
+      });
+      $('#deleteAll').hide();
+    }
+  });
+  // SELECT ALL //
+  // DELETE ALL //
+  $('#deleteAll').click(function() {
+    // event.preventDefault();
+    var array = [];
+    $('#items_table :checked').each(function() {
+      array.push($(this).val());
+    });
+    $.ajax({
+      type: "POST",
+      url: $(this).attr('href') + '.json',
+      data: {
+        ids: array
+      },
+      beforeSend: function() {
+        return confirm("Вы уверенны?");
+      },
+      success: function(data, textStatus, jqXHR) {
+        if (data.status === 'ok') {
+          //alert(data.message);
+          location.reload();
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR);
+      }
+    })
+  });
+  // DELETE ALL //
+
+  $('.import_file').click(function() {
+    $('.import_file_submit').css('display', 'block');
+  });
+
+
+});

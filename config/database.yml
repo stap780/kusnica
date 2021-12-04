@@ -1,0 +1,19 @@
+development:
+  adapter: postgresql
+  host: localhost
+  encoding: unicode
+  database: kusnica_development
+  pool: 5
+  username: administrator
+  password:
+  template: template0
+
+test:
+  adapter: postgresql
+  host: localhost
+  encoding: unicode
+  database: kusnica_test
+  pool: 5
+  username: administrator
+  password:
+  template: template0

@@ -1,0 +1,95 @@
+<div class="row justify-content-center align-items-center mb-2">
+<div class="col-2 row">
+  <div class="h3 col-md-12 p-0">
+    <div class="h3">Products</div>
+    <div class="h6">Всего - <%= Product.count %></div>
+    <div class="btn-group p-0" role="group" aria-label="Button group with nested dropdown">
+      <div class="btn-group" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown">Действия</button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <%# link_to 'New Product', new_product_path, class: 'dropdown-item' %>
+          <%= link_to 'Import Product', xml_import_products_path, class: 'dropdown-item' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <%= search_form_for @search, {class: 'form-inline col-10 pl-0 pr-0'} do |f| %>
+    <div class="input-group input-group-sm">
+            <%= f.search_field :sku_eq , placeholder: 'sku', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.search_field :title_eq , placeholder: 'title', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.search_field :desc_eq , placeholder: 'desc', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.search_field :cat_eq , placeholder: 'cat', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.search_field :oldprice_eq , placeholder: 'oldprice', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.search_field :price_eq , placeholder: 'price', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.search_field :quantity_eq , placeholder: 'quantity', class: "form-control", style: "max-width: 180px;" %>
+            <%# f.search_field :image_eq , placeholder: 'image', class: "form-control", style: "max-width: 180px;" %>
+            <%# f.search_field :url_eq , placeholder: 'url', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.search_field :parametr_cont , placeholder: 'parametr', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.search_field :ins_id_eq , placeholder: 'ins_id', class: "form-control", style: "max-width: 180px;" %>
+            <%# f.search_field :ins_var_id_eq , placeholder: 'ins_var_id', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.search_field :ebay_id_eq , placeholder: 'ebay_id', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.search_field :etsy_id_eq , placeholder: 'etsy_id', class: "form-control", style: "max-width: 180px;" %>
+            <%= button_tag(type: 'submit', :class => "btn btn-info") do %>
+        <span class="oi oi-magnifying-glass"></span>
+      <% end %>
+      <%= link_to '<span class="oi oi-reload"></span>'.html_safe, products_path, class: 'btn btn-outline-dark ' %>
+      <%= link_to '<span class="oi oi-trash"></span>'.html_safe, delete_selected_products_path, class: 'btn btn-secondary', id: 'deleteAll', remote: true %>
+    </div>
+  <% end %>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-hover table-condensed table-sm">
+  <thead>
+    <tr class="bg-success">
+      <th><%= check_box_tag 'selectAll', value: 'selectAll'%></th>
+      <th>Sku</th>
+      <th style="width: 16.66%">Title</th>
+      <th>Desc</th>
+      <th>Cat</th>
+      <th>Oldprice</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th style="width: 16.66%">Image</th>
+      <th>Parametr</th>
+      <th style="width: 16.66%">Insales</th>
+      <th>Ebay</th>
+      <th>Etsy</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody id="items_table">
+    <% @products.each do |product| %>
+    <tr>
+        <td><%= check_box_tag "product_ids[]", product.id %></td>
+        <td><%= product.sku %></td>
+        <td><%= link_to product.title, edit_product_path(product)  %></td>
+        <td><% if product.desc.present? %>есть<%else%>нет<%end%></td>
+        <td><%= product.cat %></td>
+        <td><%= product.oldprice %></td>
+        <td><%= product.price %></td>
+        <td><%= product.quantity %></td>
+        <td><div class="row pl-3 pr-3">
+          <% if product.image.present? %>
+            <% product.image.split(' ').first(4).each do |pict| %>
+                <div class="col-md-4 p-0"><img class="img-thumbnail" src="<%= pict %>"></div>
+            <% end %>
+          <% end %></div>
+        </td>
+        <td><%= product.parametr.truncate(45) if product.parametr.present? %></td>
+        <td><%= link_to '<span class="oi oi-eye"></span>'.html_safe, product.url, target: "_blank" %><br />ID: <%= product.ins_id %><br /> VAR_ID: <%= product.ins_var_id %></td>
+        <td><%= product.ebay_id %></td>
+        <td><%= product.etsy_id %></td>
+        <td><%= link_to '<span class="oi oi-trash"></span>'.html_safe, product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+
+<div class="apple_pagination">
+<%= will_paginate @products %>
+</div>
