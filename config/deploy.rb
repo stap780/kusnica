@@ -37,7 +37,7 @@ lock "~> 3.16.0"
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
-set :branch, 'main'
+set :branch, 'master'
 set :application, "kusnica" #app name can take from Rails.application.class.parent_name.downcase
 set :repo_url, "git@github.com:stap780/#{fetch(:application)}.git"
 set :deploy_to, "/var/www/#{fetch(:application)}"
