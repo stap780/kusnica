@@ -75,8 +75,7 @@ class ProductsController < ApplicationController
   end
 
   def xml_import
-    Rails.env.development? ? Services::Import.product : Services::Import.delay_product
-    Rails.env.development? ? Services::Import.quantity : Services::Import.delay_quantity
+    Rails.env.development? ? Services::Import.xml_import : ProductJob.xml_import_later
     redirect_to products_path, notice: 'Запущен процесс Обновление Товаров InSales'
   end
 

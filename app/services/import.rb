@@ -1,11 +1,8 @@
 class Services::Import
 
-  def self.delay_product
-    self.delay.product
-  end
-
-  def self.delay_quantity
-    self.delay.quantity
+  def self.xml_import
+    self.product
+    self.quantity
   end
 
   def self.product
