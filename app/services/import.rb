@@ -1,13 +1,5 @@
 class Services::Import
 
-  def self.delay_product
-    self.delay.product
-  end
-
-  def self.delay_quantity
-    self.delay.quantity
-  end
-
   def self.product
     puts '=====>>>> СТАРТ InSales YML '+Time.now.to_s
 
