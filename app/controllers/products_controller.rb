@@ -5,8 +5,20 @@ class ProductsController < ApplicationController
 
   # GET /products
   def index
+    if params[:q].present?
+      new_q = {}
+      params[:q].each do |k,v|
+        if k == 'quantity_in'
+          value = Product.quantity_search(v)
+          new_q[k] = value
+        else
+          new_q[k] = v
+        end
+      end
+      # puts new_q
+    end
     #@products = Product.all
-    @search = Product.ransack(params[:q])
+    @search = Product.ransack(new_q)
     @search.sorts = 'id asc' if @search.sorts.empty?
     @products = @search.result.paginate(page: params[:page], per_page: 100)
   end

@@ -3,6 +3,8 @@
   <div class="h3 col-md-12 p-0">
     <div class="h3">Products</div>
     <div class="h6">Всего - <%= Product.count %></div>
+    <div class="h6">Товаров > 0 - <%= Product.all_product_not_nil_size%></div>
+      <div class="h6">Отфильтровано: <%=@products.count%></div>
     <div class="btn-group p-0" role="group" aria-label="Button group with nested dropdown">
       <div class="btn-group" role="group">
         <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown">Действия</button>
@@ -22,7 +24,7 @@
             <%= f.search_field :cat_eq , placeholder: 'cat', class: "form-control", style: "max-width: 180px;" %>
             <%= f.search_field :oldprice_eq , placeholder: 'oldprice', class: "form-control", style: "max-width: 180px;" %>
             <%= f.search_field :price_eq , placeholder: 'price', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.search_field :quantity_eq , placeholder: 'quantity', class: "form-control", style: "max-width: 180px;" %>
+            <%= f.select :quantity_in, [['все','all'],['> 0', 1],['= 0', 0]], { include_blank: false, prompt: 'Кол-во'}, class: "form-select", style: "max-width: 180px;" %>
             <%# f.search_field :image_eq , placeholder: 'image', class: "form-control", style: "max-width: 180px;" %>
             <%# f.search_field :url_eq , placeholder: 'url', class: "form-control", style: "max-width: 180px;" %>
             <%= f.search_field :parametr_cont , placeholder: 'parametr', class: "form-control", style: "max-width: 180px;" %>
@@ -50,7 +52,7 @@
       <th>Cat</th>
       <th>Oldprice</th>
       <th>Price</th>
-      <th>Quantity</th>
+      <th><%= sort_link(@search, :quantity, 'Кол') %></th>
       <th style="width: 16.66%">Image</th>
       <th>Parametr</th>
       <th style="width: 16.66%">Insales</th>
