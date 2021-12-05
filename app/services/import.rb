@@ -1,19 +1,23 @@
 class Services::Import
 
-  def self.xml_import
-    a = Services::Import.new
-    a.product
-    a.quantity
+  def self.full_import
+    self.product
+    self.quantity
   end
 
-  def product
+  def self.product
+    require 'open-uri'
     puts '=====>>>> СТАРТ InSales YML '+Time.now.to_s
 
     Product.update_all(quantity: "0")
 
-    uri = "https://kusnica.ru/marketplace/88195.xml"
-    response = RestClient.get uri, :accept => :xml, :content_type => "application/xml"
-    data = Nokogiri::XML(response)
+    url = "https://kusnica.ru/marketplace/88195.xml"
+    filename = url.split('/').last
+    download = open(url)
+		download_path = "#{Rails.public_path}"+"/"+filename
+		IO.copy_stream(download, download_path)
+    # response = RestClient.get url, :accept => :xml, :content_type => "application/xml"
+    data = Nokogiri::XML(open(download_path))
     offers = data.xpath("//offer")
 
     categories = {}
@@ -47,10 +51,13 @@ class Services::Import
       break if Rails.env.development? && i == 100
 
     end
+
+    File.delete(download_path) if File.file?(download_path).present?
+
     puts '=====>>>> FINISH InSales YML '+Time.now.to_s
   end
 
-  def quantity
+  def self.quantity
     require 'open-uri'
     puts '=====>>>> СТАРТ InSales EXCEL '+Time.now.to_s
     url = "https://kusnica.ru/marketplace/88178.xls"

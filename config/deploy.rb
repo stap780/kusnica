@@ -46,8 +46,6 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', '
 set :format, :pretty
 set :log_level, :info
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
-set :delayed_job_workers, 4
-set :delayed_job_roles, [:app]
 after 'deploy:publishing', 'unicorn:restart'
 
 
