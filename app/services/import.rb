@@ -1,10 +1,5 @@
 class Services::Import
 
-  def self.full_import
-    self.product
-    self.quantity
-  end
-
   def self.product
     require 'open-uri'
     puts '=====>>>> СТАРТ InSales YML '+Time.now.to_s
@@ -57,7 +52,7 @@ class Services::Import
     puts '=====>>>> FINISH InSales YML '+Time.now.to_s
   end
 
-  def self.quantity
+  def self.product_quantity
     require 'open-uri'
     puts '=====>>>> СТАРТ InSales EXCEL '+Time.now.to_s
     url = "https://kusnica.ru/marketplace/88178.xls"

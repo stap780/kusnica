@@ -3,6 +3,6 @@ class ImportProductJob < ApplicationJob
 
   def perform
     # Do something later
-    Services::Import.full_import
+    Services::Import.product
   end
 end
