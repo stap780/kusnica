@@ -8,12 +8,7 @@ class ProductsController < ApplicationController
     if params[:q].present?
       new_q = {}
       params[:q].each do |k,v|
-        if k == 'quantity_in'
-          value = Product.quantity_search(v)
-          new_q[k] = value
-        else
-          new_q[k] = v
-        end
+        new_q[k] = k == 'quantity_in' ? Product.quantity_search(v) : v
       end
       # puts new_q
     end
