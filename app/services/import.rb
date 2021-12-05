@@ -1,11 +1,12 @@
 class Services::Import
 
   def self.xml_import
-    self.product
-    self.quantity
+    a = Services::Import.new
+    a.product
+    a.quantity
   end
 
-  def self.product
+  def product
     puts '=====>>>> СТАРТ InSales YML '+Time.now.to_s
 
     Product.update_all(quantity: "0")
@@ -49,7 +50,7 @@ class Services::Import
     puts '=====>>>> FINISH InSales YML '+Time.now.to_s
   end
 
-  def self.quantity
+  def quantity
     require 'open-uri'
     puts '=====>>>> СТАРТ InSales EXCEL '+Time.now.to_s
     url = "https://kusnica.ru/marketplace/88178.xls"
@@ -76,4 +77,5 @@ class Services::Import
 
     puts '=====>>>> FINISH InSales EXCEL '+Time.now.to_s
   end
+
 end

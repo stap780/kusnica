@@ -36,6 +36,7 @@ group :development do
   gem 'capistrano-rvm'
   gem 'capistrano3-unicorn'
   gem 'capistrano-rails-console'
+  gem 'capistrano-delayed-job'
 
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.0.5'
