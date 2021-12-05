@@ -4,7 +4,7 @@ class Services::Import
     require 'open-uri'
     puts '=====>>>> СТАРТ InSales YML '+Time.now.to_s
 
-    Product.update_all(quantity: "0")
+    Product.update_all(quantity: 0)
 
     url = "https://kusnica.ru/marketplace/88195.xml"
     filename = url.split('/').last
@@ -28,7 +28,6 @@ class Services::Import
         sku: pr.xpath("sku").text,
         title: pr.xpath("model").text,
         url: pr.xpath("url").text,
-        quantity: "0",#pr.xpath("quantity").text,
         desc: pr.xpath("description").text,
         image: pr.xpath("picture").map(&:text).join(' '),
         cat: categories[pr.xpath("categoryId").text],
