@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_04_190519) do
+ActiveRecord::Schema.define(version: 2021_12_05_161813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_190519) do
     t.string "cat"
     t.decimal "oldprice"
     t.decimal "price"
-    t.string "quantity"
+    t.integer "quantity"
     t.string "image"
     t.string "url"
     t.string "parametr"
