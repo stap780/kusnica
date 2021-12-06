@@ -16,7 +16,7 @@ class Product < ApplicationRecord
 		if v.to_i == 0
 			value = Array(0..0)
 		end
-		if v != 'all' and v.to_i != 0
+		if v.to_i == 1
 			value = Array(1..default_v)
 		end
 	end
