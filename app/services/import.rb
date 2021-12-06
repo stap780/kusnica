@@ -73,7 +73,7 @@ class Services::Import
       product.update(data) if product.present?
 
     end
-
+    Product.where(quantity: nil).update_all(quantity: 0)
     File.delete(download_path) if File.file?(download_path).present?
 
     puts '=====>>>> FINISH InSales EXCEL '+Time.now.to_s
