@@ -36,8 +36,14 @@ def self.create_ebay_file(products, type)
 		@products = Product.where(id: products)#.limit(10000).offset(20000) #where('title like ?', '%Bellelli B-bip%')
 		CSV.open( file, 'w') do |writer|
       images = Array(1..10).map{|a| "Picture URL "+a.to_s}
-
-      count_parametr = @products.where.not(parametr: nil).pluck(:parametr).reject(&:blank?).uniq.map{|p| p.split('---').first}.uniq.count
+      vparamHeader = []
+      parametrs = @products.where.not(parametr: nil).pluck(:parametr).reject(&:blank?)
+      parametrs.each do |p|
+  			p.split('---').each do |pa|
+  				vparamHeader << pa.split(':')[0].strip if pa != nil
+  			end
+  		end
+      count_parametr = vparamHeader.uniq.count
       header_parametr = []
       Array(1..count_parametr).each do |a|
         header_parametr << 'Attribute Name '+a.to_s
