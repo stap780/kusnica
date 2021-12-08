@@ -22,7 +22,7 @@ class Product < ApplicationRecord
 	end
 
 def self.create_ebay_file(products, type)
-	  puts "Файл decor инсалес"
+	  puts "Файл create_ebay_file"
 
 		file = "#{Rails.public_path}"+'/'+type+'.csv'
 		check = File.file?(file)
@@ -34,6 +34,7 @@ def self.create_ebay_file(products, type)
 
 		#создаём файл со статичными данными
 		@products = Product.where(id: products)#.limit(10000).offset(20000) #where('title like ?', '%Bellelli B-bip%')
+
 		CSV.open( file, 'w') do |writer|
       images = Array(1..10).map{|a| "Picture URL "+a.to_s}
       vparamHeader = []
@@ -101,9 +102,9 @@ def self.create_ebay_file(products, type)
 		end
 
 
-	puts "Finish Файл nail инсалес"
+	puts "Finish Файл create_ebay_file"
 
-	current_process = "создаём файл csv_param Decor"
+	current_process = "создаём файл create_ebay_file"
 	# CaseMailer.notifier_process(current_process).deliver_now
 
 	end

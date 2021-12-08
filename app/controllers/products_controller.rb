@@ -16,8 +16,10 @@ class ProductsController < ApplicationController
     @search.sorts = 'id asc' if @search.sorts.empty?
     @products = @search.result.paginate(page: params[:page], per_page: 100)
 
-    @filtered_params = params[:q].present? ? params[:q].reject{ |k,v| !v.present? } : []
-    @products_filtered = Product.ransack(@filtered_params).result.pluck(:id)
+    @filtered_params_for_view = params[:q].present? ? params[:q].reject{ |k,v| !v.present? } : {}
+
+    @products_filtered = Product.ransack(new_q).result.pluck(:id)
+    #puts "@products_filtered - "+@products_filtered.to_s
     if params['file_type'].present? and params['file_type'] == 'ebay'
 	    if @products_filtered.size > 900
 		    Product.delay.create_ebay_file(@products_filtered, params['file_type'])
