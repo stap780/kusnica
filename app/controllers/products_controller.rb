@@ -16,6 +16,37 @@ class ProductsController < ApplicationController
     @search = Product.ransack(new_q)
     @search.sorts = 'id asc' if @search.sorts.empty?
     @products = @search.result.paginate(page: params[:page], per_page: 100)
+
+    @filtered_params = params[:q].present? ? params[:q].reject{ |k,v| !v.present? } : []
+    @products_filtered = Product.ransack(@filtered_params).result.pluck(:id)
+    if params['file_type'].present? and params['file_type'] == 'ebay'
+	    if @products_filtered.size > 900
+		    Product.delay.create_ebay_file(@decors_filtered, params['file_type'])
+		    flash[:notice] = 'Задача запущена'
+		    redirect_to products_path
+		  else
+		 	Product.create_ebay_file(@products_filtered, params['file_type'])
+	    	redirect_to '/complete_ebay.csv'
+	    end
+  	else
+  		if params['file_type'] == 'redir'
+  		    @decors_all_redir = Decor.all.order(:id)
+  		    filename = "insales_decor_redir.csv"
+  	    end
+  	    if params['file_type'] == 'full'
+  			@decors_all = Decor.all.order(:id)
+  		    filename = "insales_decor.csv"
+  	    end
+
+  		respond_to do |format|
+  			format.html
+  			format.xml
+  			format.csv do
+  			  headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
+  			  headers['Content-Type'] ||= 'text/csv'
+  			end
+  		end
+	  end
   end
 
   # GET /products/1

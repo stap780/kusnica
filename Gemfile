@@ -31,6 +31,7 @@ gem 'delayed_job_active_record'
 gem 'bcrypt_pbkdf', '< 2.0', :require => false
 gem 'ed25519', '~> 1.2', '>= 1.2.4'
 gem 'daemons'
+gem 'combinatorics'
 
 group :development do
   gem 'capistrano-rails'

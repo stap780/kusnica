@@ -36,6 +36,7 @@
         <span class="oi oi-magnifying-glass"></span>
       <% end %>
       <%= link_to '<span class="oi oi-reload"></span>'.html_safe, products_path, class: 'btn btn-outline-dark ' %>
+      <%= link_to '<span class="oi oi-list"></span>'.html_safe, products_path(file_type: 'ebay', q: @filtered_params), title: "Создать файл ebay", class: 'btn btn-outline-dark'%>
       <%= link_to '<span class="oi oi-trash"></span>'.html_safe, delete_selected_products_path, class: 'btn btn-secondary', id: 'deleteAll', remote: true %>
     </div>
   <% end %>
