@@ -18,21 +18,21 @@
 </div>
   <%= search_form_for @search, {class: 'form-inline col-10 pl-0 pr-0'} do |f| %>
     <div class="input-group input-group-sm">
-            <%= f.search_field :sku_eq , placeholder: 'sku', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.search_field :title_eq , placeholder: 'title', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.search_field :desc_eq , placeholder: 'desc', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.search_field :cat_eq , placeholder: 'cat', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.search_field :oldprice_eq , placeholder: 'oldprice', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.search_field :price_eq , placeholder: 'price', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.select :quantity_in, [['все','all'],['> 0', 1],['= 0', 0]], { include_blank: false, prompt: 'Кол-во'}, class: "form-select", style: "max-width: 180px;" %>
-            <%# f.search_field :image_eq , placeholder: 'image', class: "form-control", style: "max-width: 180px;" %>
-            <%# f.search_field :url_eq , placeholder: 'url', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.search_field :parametr_cont , placeholder: 'parametr', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.search_field :ins_id_eq , placeholder: 'ins_id', class: "form-control", style: "max-width: 180px;" %>
-            <%# f.search_field :ins_var_id_eq , placeholder: 'ins_var_id', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.search_field :ebay_id_eq , placeholder: 'ebay_id', class: "form-control", style: "max-width: 180px;" %>
-            <%= f.search_field :etsy_id_eq , placeholder: 'etsy_id', class: "form-control", style: "max-width: 180px;" %>
-            <%= button_tag(type: 'submit', :class => "btn btn-info") do %><span class="oi oi-magnifying-glass"></span><% end %>
+      <%= f.search_field :sku_eq , placeholder: 'sku', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.search_field :title_eq , placeholder: 'title', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.search_field :desc_eq , placeholder: 'desc', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.search_field :cat_eq , placeholder: 'cat', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.search_field :oldprice_eq , placeholder: 'oldprice', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.search_field :price_eq , placeholder: 'price', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.select :quantity_in, [['все','all'],['> 0', 1],['= 0', 0]], { include_blank: false, prompt: 'Кол-во'}, class: "form-select", style: "max-width: 180px;" %>
+      <%# f.search_field :image_eq , placeholder: 'image', class: "form-control", style: "max-width: 180px;" %>
+      <%# f.search_field :url_eq , placeholder: 'url', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.search_field :parametr_cont , placeholder: 'parametr', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.search_field :ins_id_eq , placeholder: 'ins_id', class: "form-control", style: "max-width: 180px;" %>
+      <%# f.search_field :ins_var_id_eq , placeholder: 'ins_var_id', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.search_field :ebay_id_eq , placeholder: 'ebay_id', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.search_field :etsy_id_eq , placeholder: 'etsy_id', class: "form-control", style: "max-width: 180px;" %>
+      <%= button_tag(type: 'submit', :class => "btn btn-info") do %><span class="oi oi-magnifying-glass"></span><% end %>
       <%= link_to '<span class="oi oi-reload"></span>'.html_safe, products_path, class: 'btn btn-outline-dark ' %>
       <% if @filtered_params_for_view.present? %>
       <%= link_to '<span class="oi oi-list"></span>'.html_safe, products_path(file_type: 'ebay', q: @filtered_params_for_view.to_unsafe_h), title: "Создать файл ebay", class: 'btn btn-outline-dark'%>
