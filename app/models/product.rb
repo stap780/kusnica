@@ -51,7 +51,7 @@ def self.create_ebay_file(products, type)
         header_parametr << 'Attribute Value '+a.to_s
       end
 
-      header = ['SKU','Localized For','Title', 'Product Description', 'Condition', 'List Price'].concat(images).concat(header_parametr)
+      header = ['SKU','Localized For','Title', 'Product Description', 'Condition', 'List Price', 'Total Ship to Home Quantity', 'Channel ID', 'Category', 'Shipping Policy', 'Payment Policy', 'Return Policy'].concat(images).concat(header_parametr)
 
   		writer << header
 
@@ -62,12 +62,17 @@ def self.create_ebay_file(products, type)
       add_array = Array(1..add_count).map{|a| ""}
       images = images_pr.count < 10 ? images_pr.concat(add_array) : images_pr.first(10)
 
-			price = pr.price.present? ? pr.price.to_s : '0'
-			quantity = pr.quantity.present? ?  pr.quantity : ''
+			price = pr.price_dollar.present? ? pr.price_dollar.to_s : '0'
+			quantity = pr.quantity.present? ?  pr.quantity : '0'
 			desc = pr.desc.present? ? pr.desc : ''
 			ins_id = pr.ins_id.present? ? pr.ins_id : pr.sku
+      channel_id = 'EBAY_US'
+      category = '20272'
+      ship_policy = 'Flat:Economy Shippi($14.00)/Flat:Economy Inte' #name from ebay policy
+      payment_policy = '1PayPal' #name from ebay policy
+      return_policy = 'Returns Accepted,Buyer,30 Days,Money Back,Int' #name from ebay policy
 
-			writer << [ins_id, 'en_US', title, desc, 'NEW', price].concat(images)
+			writer << [ins_id, 'en_US', title, desc, 'NEW', price, quantity, channel_id, category, ship_policy, payment_policy, return_policy].concat(images)
 
 			end
 		end #CSV.open
@@ -105,7 +110,7 @@ def self.create_ebay_file(products, type)
 	puts "Finish Файл create_ebay_file"
 
 	current_process = "создаём файл create_ebay_file"
-	# CaseMailer.notifier_process(current_process).deliver_now
+	ProductMailer.notifier_process(current_process).deliver_now
 
 	end
 

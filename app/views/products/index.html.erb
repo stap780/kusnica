@@ -21,9 +21,9 @@
       <%= f.search_field :sku_eq , placeholder: 'sku', class: "form-control", style: "max-width: 180px;" %>
       <%= f.search_field :title_eq , placeholder: 'title', class: "form-control", style: "max-width: 180px;" %>
       <%= f.search_field :desc_eq , placeholder: 'desc', class: "form-control", style: "max-width: 180px;" %>
-      <%= f.search_field :cat_eq , placeholder: 'cat', class: "form-control", style: "max-width: 180px;" %>
-      <%= f.search_field :oldprice_eq , placeholder: 'oldprice', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.select :cat_eq, Product.all.pluck(:cat).uniq, { include_blank: false, prompt: 'Cat'}, class: "form-select", style: "max-width: 180px;" %>
       <%= f.search_field :price_eq , placeholder: 'price', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.search_field :price_dollar_eq , placeholder: 'price $', class: "form-control", style: "max-width: 180px;" %>
       <%= f.select :quantity_in, [['все','all'],['> 0', 1],['= 0', 0]], { include_blank: false, prompt: 'Кол-во'}, class: "form-select", style: "max-width: 180px;" %>
       <%# f.search_field :image_eq , placeholder: 'image', class: "form-control", style: "max-width: 180px;" %>
       <%# f.search_field :url_eq , placeholder: 'url', class: "form-control", style: "max-width: 180px;" %>
@@ -55,6 +55,7 @@
       <th>Cat</th>
       <th>Oldprice</th>
       <th>Price</th>
+      <th>Price $</th>
       <th><%= sort_link(@search, :quantity, 'Кол') %></th>
       <th style="width: 16.66%">Image</th>
       <th>Parametr</th>
@@ -75,6 +76,7 @@
         <td><%= product.cat %></td>
         <td><%= product.oldprice %></td>
         <td><%= product.price %></td>
+        <td><%= product.price_dollar %></td>
         <td><%= product.quantity %></td>
         <td><div class="row pl-3 pr-3">
           <% if product.image.present? %>

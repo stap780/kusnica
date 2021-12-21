@@ -49,6 +49,8 @@ class Services::Import
     File.delete(download_path) if File.file?(download_path).present?
 
     puts '=====>>>> FINISH InSales YML '+Time.now.to_s
+    current_process = "Services::Import product finish"
+  	ProductMailer.notifier_process(current_process).deliver_now
   end
 
   def self.product_quantity
@@ -77,6 +79,8 @@ class Services::Import
     File.delete(download_path) if File.file?(download_path).present?
 
     puts '=====>>>> FINISH InSales EXCEL '+Time.now.to_s
+    current_process = "FINISH InSales EXCEL - #{Time.now.to_s}"
+  	ProductMailer.notifier_process(current_process).deliver_now
   end
 
 end
