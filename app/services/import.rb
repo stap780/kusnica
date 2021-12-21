@@ -23,7 +23,8 @@ class Services::Import
 
     offers.each_with_index do |pr, i|
       params = pr.xpath("param").present? ? pr.xpath("param").map{ |p| p["name"]+":"+p.text }.join(' --- ') : ''
-      price_dollar = pr.xpath("param").map{ |p| p.text if p["name"] == "Цена EBAY" }[0]
+      price_dollar = pr.xpath("param").map{ |p| p.text if p["name"] == "Цена EBAY" }.reject(&:blank?)[0]
+      puts price_dollar.to_s
 
       data = {
         sku: pr.xpath("sku").text,
@@ -33,7 +34,7 @@ class Services::Import
         image: pr.xpath("picture").map(&:text).join(' '),
         cat: categories[pr.xpath("categoryId").text],
         price: pr.xpath("price").text.to_f,
-        price_dollar: price_dollar.text.to_f,
+        price_dollar: price_dollar.to_f,
         oldprice: pr.xpath("oldprice").text.to_f,
         parametr: params,
         ins_id: pr["group_id"],
@@ -51,7 +52,8 @@ class Services::Import
     File.delete(download_path) if File.file?(download_path).present?
 
     puts '=====>>>> FINISH InSales YML '+Time.now.to_s
-    current_process = "Services::Import product finish"
+
+    current_process = "=====>>>> FINISH InSales YML - #{Time.now.to_s} - Начинаем обновление остатков"
   	ProductMailer.notifier_process(current_process).deliver_now
   end
 
@@ -81,7 +83,8 @@ class Services::Import
     File.delete(download_path) if File.file?(download_path).present?
 
     puts '=====>>>> FINISH InSales EXCEL '+Time.now.to_s
-    current_process = "FINISH InSales EXCEL - #{Time.now.to_s}"
+
+    current_process = "=====>>>> FINISH InSales EXCEL - #{Time.now.to_s} - Закончили обновление остатков"
   	ProductMailer.notifier_process(current_process).deliver_now
   end
 

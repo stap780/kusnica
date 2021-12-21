@@ -21,9 +21,9 @@
       <%= f.search_field :sku_eq , placeholder: 'sku', class: "form-control", style: "max-width: 180px;" %>
       <%= f.search_field :title_eq , placeholder: 'title', class: "form-control", style: "max-width: 180px;" %>
       <%= f.search_field :desc_eq , placeholder: 'desc', class: "form-control", style: "max-width: 180px;" %>
-      <%= f.select :cat_eq, Product.all.pluck(:cat).uniq, { include_blank: false, prompt: 'Cat'}, class: "form-select", style: "max-width: 180px;" %>
+      <%= f.select :cat_eq, Product.order(cat: :asc).pluck(:cat).uniq, { include_blank: false, prompt: 'Cat'}, class: "form-select", style: "max-width: 180px;" %>
       <%= f.search_field :price_eq , placeholder: 'price', class: "form-control", style: "max-width: 180px;" %>
-      <%= f.search_field :price_dollar_eq , placeholder: 'price $', class: "form-control", style: "max-width: 180px;" %>
+      <%= f.select :price_dollar_null , [['нет', true],['есть', false]], { include_blank: false, prompt: 'price $'}, class: "form-select", style: "max-width: 180px;" %>
       <%= f.select :quantity_in, [['все','all'],['> 0', 1],['= 0', 0]], { include_blank: false, prompt: 'Кол-во'}, class: "form-select", style: "max-width: 180px;" %>
       <%# f.search_field :image_eq , placeholder: 'image', class: "form-control", style: "max-width: 180px;" %>
       <%# f.search_field :url_eq , placeholder: 'url', class: "form-control", style: "max-width: 180px;" %>
