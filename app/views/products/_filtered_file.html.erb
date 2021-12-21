@@ -1,0 +1,5 @@
+<% if @filtered_params_for_view.present? %>
+<%= link_to '<span class="oi oi-list"></span>'.html_safe, products_path(file_type: 'full', format: 'csv', q: @filtered_params_for_view.to_unsafe_h), title: "Создать файл", class: 'btn btn-outline-dark'%>
+<% else %>
+<%= link_to '<span class="oi oi-list"></span>'.html_safe, products_path(file_type: 'full', format: 'csv'), title: "Создать файл", class: 'btn btn-outline-dark'%>
+<% end %>

@@ -7,6 +7,14 @@ class Product < ApplicationRecord
 	scope :all_product_not_nil, -> { all_product.where('quantity >= ?', 1) }
 	scope :all_product_not_nil_size, -> { all_product_not_nil.size }
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |item|
+        csv << item.attributes.values_at(*column_names)
+      end
+    end
+  end
 
   def self.quantity_search(v)
 		default_v = Product.pluck(:quantity).uniq.sort.last
@@ -21,7 +29,7 @@ class Product < ApplicationRecord
 		end
 	end
 
-def self.create_ebay_file(products, type)
+  def self.create_ebay_file(products, type)
 	  puts "Файл create_ebay_file"
 
 		file = "#{Rails.public_path}"+'/'+type+'.csv'

@@ -1,0 +1,5 @@
+<% if @filtered_params_for_view.present? %>
+<%= link_to "Файл EBAY", products_path(file_type: 'ebay', q: @filtered_params_for_view.to_unsafe_h), title: "Создать файл ebay", class: 'dropdown-item'%>
+<% else %>
+<%= link_to "Файл EBAY", products_path(file_type: 'ebay'), title: "Создать файл ebay", class: 'dropdown-item'%>
+<% end %>

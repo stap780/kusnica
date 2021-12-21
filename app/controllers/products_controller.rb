@@ -17,37 +17,46 @@ class ProductsController < ApplicationController
     @products = @search.result.paginate(page: params[:page], per_page: 100)
 
     @filtered_params_for_view = params[:q].present? ? params[:q].reject{ |k,v| !v.present? } : {}
-
-    @products_filtered = Product.ransack(new_q).result.pluck(:id)
+puts @filtered_params_for_view.present?
+    products_filtered_id_arr = Product.ransack(new_q).result.pluck(:id)
     #puts "@products_filtered - "+@products_filtered.to_s
-    if params['file_type'].present? and params['file_type'] == 'ebay'
-	    if @products_filtered.size > 900
-		    Product.delay.create_ebay_file(@products_filtered, params['file_type'])
-		    flash[:notice] = 'Задача запущена'
-		    redirect_to products_path
-		  else
-		 	  Product.create_ebay_file(@products_filtered, params['file_type'])
-	    	redirect_to '/complete_ebay.csv'
+      if params['file_type'].present? && params['file_type'] == 'ebay'
+  	    if products_filtered_id_arr.size > 1500
+  		    Product.delay.create_ebay_file(products_filtered_id_arr, params['file_type'])
+  		    flash[:notice] = 'Задача запущена. Ожидайте письма о завершении'
+  		    redirect_to products_path
+  		  else
+  		 	  Product.create_ebay_file(products_filtered_id_arr, params['file_type'])
+  	    	redirect_to '/complete_ebay.csv'
+  	    end
+    	else
+        # if params['file_type'] == 'redir'
+        #   @decors_all_redir = Decor.all.order(:id)
+        #   filename = "insales_decor_redir.csv"
+        # end
+        # if params['file_type'] == 'full'
+        #   @decors_all = Decor.all.order(:id)
+        #   filename = "insales_decor.csv"
+        # end
+        #
+    		# respond_to do |format|
+    		# 	format.html
+    		# 	format.xml
+    		# 	format.csv do
+    		# 	  headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
+    		# 	  headers['Content-Type'] ||= 'text/csv'
+    		# 	end
+    		#end
+        if params['file_type'].present? && params['file_type'] == 'full'
+              respond_to do |format|
+                if @filtered_params_for_view.present?
+                format.csv {send_data Product.where(id: products_filtered_id_arr).to_csv, filename: "product_filtered.csv" }
+                else
+                format.csv {send_data Product.order(:id).to_csv, filename: "product_full.csv" }
+                end
+              end
+          end
 	    end
-  	else
-      # if params['file_type'] == 'redir'
-      #   @decors_all_redir = Decor.all.order(:id)
-      #   filename = "insales_decor_redir.csv"
-      # end
-      # if params['file_type'] == 'full'
-      #   @decors_all = Decor.all.order(:id)
-      #   filename = "insales_decor.csv"
-      # end
-      #
-  		# respond_to do |format|
-  		# 	format.html
-  		# 	format.xml
-  		# 	format.csv do
-  		# 	  headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
-  		# 	  headers['Content-Type'] ||= 'text/csv'
-  		# 	end
-  		#end
-	  end
   end
 
   # GET /products/1

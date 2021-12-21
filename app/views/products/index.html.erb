@@ -1,22 +1,26 @@
 <div class="row justify-content-center align-items-center mb-2">
 <div class="col-2 row">
-  <div class="h3 col-md-12 p-0">
+  <div class="col-md-12 p-0">
     <div class="h3">Products</div>
     <div class="h6">Всего - <%= Product.count %></div>
     <div class="h6">Товаров > 0 - <%= Product.all_product_not_nil_size%></div>
-      <div class="h6">Отфильтровано: <%=@products.count%></div>
+    <div class="h6">Отфильтровано: <%=@products.count%></div>
+  </div>
+</div>
+<div class="col-10 pl-0 pr-0 row">
+  <div class="col-12 mb-3">
     <div class="btn-group p-0" role="group" aria-label="Button group with nested dropdown">
       <div class="btn-group" role="group">
         <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown">Действия</button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
           <%# link_to 'New Product', new_product_path, class: 'dropdown-item' %>
           <%= link_to 'Import Product', xml_import_products_path, class: 'dropdown-item' %>
+          <%= render "ebay_file" %>
         </div>
       </div>
     </div>
   </div>
-</div>
-  <%= search_form_for @search, {class: 'form-inline col-10 pl-0 pr-0'} do |f| %>
+  <%= search_form_for @search, {class: 'form-inline col-12 pl-0 pr-0'} do |f| %>
     <div class="input-group input-group-sm">
       <%= f.search_field :sku_eq , placeholder: 'sku', class: "form-control", style: "max-width: 180px;" %>
       <%= f.search_field :title_eq , placeholder: 'title', class: "form-control", style: "max-width: 180px;" %>
@@ -34,14 +38,11 @@
       <%= f.search_field :etsy_id_eq , placeholder: 'etsy_id', class: "form-control", style: "max-width: 180px;" %>
       <%= button_tag(type: 'submit', :class => "btn btn-info") do %><span class="oi oi-magnifying-glass"></span><% end %>
       <%= link_to '<span class="oi oi-reload"></span>'.html_safe, products_path, class: 'btn btn-outline-dark ' %>
-      <% if @filtered_params_for_view.present? %>
-      <%= link_to '<span class="oi oi-list"></span>'.html_safe, products_path(file_type: 'ebay', q: @filtered_params_for_view.to_unsafe_h), title: "Создать файл ebay", class: 'btn btn-outline-dark'%>
-      <% else %>
-      <%= link_to '<span class="oi oi-list"></span>'.html_safe, products_path(file_type: 'ebay'), title: "Создать файл ebay", class: 'btn btn-outline-dark'%>
-      <% end %>
+      <%= render "filtered_file" %>
       <%= link_to '<span class="oi oi-trash"></span>'.html_safe, delete_selected_products_path, class: 'btn btn-secondary', id: 'deleteAll', remote: true %>
     </div>
   <% end %>
+  </div>
 </div>
 
 <div class="table-responsive">
