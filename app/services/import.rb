@@ -5,6 +5,7 @@ class Services::Import
     puts '=====>>>> СТАРТ InSales YML '+Time.now.to_s
 
     Product.update_all(quantity: 0)
+    Product.update_all(price_dollar: nil)
 
     url = "https://kusnica.ru/marketplace/88195.xml"
     filename = url.split('/').last
@@ -24,7 +25,7 @@ class Services::Import
     offers.each_with_index do |pr, i|
       params = pr.xpath("param").present? ? pr.xpath("param").map{ |p| p["name"]+":"+p.text }.join(' --- ') : ''
       price_dollar = pr.xpath("param").map{ |p| p.text if p["name"] == "Цена EBAY" }.reject(&:blank?)[0]
-      puts price_dollar.to_s
+      # puts price_dollar.to_s
 
       data = {
         sku: pr.xpath("sku").text,
