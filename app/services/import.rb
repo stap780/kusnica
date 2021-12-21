@@ -23,6 +23,7 @@ class Services::Import
 
     offers.each_with_index do |pr, i|
       params = pr.xpath("param").present? ? pr.xpath("param").map{ |p| p["name"]+":"+p.text }.join(' --- ') : ''
+      price_dollar = pr.xpath("param").map{ |p| p.text if p["name"] == "Цена EBAY" }[0]
 
       data = {
         sku: pr.xpath("sku").text,
@@ -32,6 +33,7 @@ class Services::Import
         image: pr.xpath("picture").map(&:text).join(' '),
         cat: categories[pr.xpath("categoryId").text],
         price: pr.xpath("price").text.to_f,
+        price_dollar: price_dollar.text.to_f,
         oldprice: pr.xpath("oldprice").text.to_f,
         parametr: params,
         ins_id: pr["group_id"],
