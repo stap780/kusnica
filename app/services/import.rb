@@ -5,7 +5,6 @@ class Services::Import
     puts '=====>>>> СТАРТ InSales YML '+Time.now.to_s
 
     Product.update_all(quantity: 0)
-    Product.update_all(price_dollar: nil)
 
     url = "https://kusnica.ru/marketplace/88195.xml?lang=eng"
     filename = url.split('/').last
@@ -49,6 +48,8 @@ class Services::Import
       break if Rails.env.development? && i == 100
 
     end
+
+    Product.where( price_dollar: 0 ).update_all(price_dollar: nil)
 
     File.delete(download_path) if File.file?(download_path).present?
 
