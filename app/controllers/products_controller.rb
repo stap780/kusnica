@@ -17,7 +17,7 @@ class ProductsController < ApplicationController
     @products = @search.result.paginate(page: params[:page], per_page: 100)
 
     @filtered_params_for_view = params[:q].present? ? params[:q].reject{ |k,v| !v.present? } : {}
-puts @filtered_params_for_view.present?
+    puts @filtered_params_for_view.present?
     products_filtered_id_arr = Product.ransack(new_q).result.pluck(:id)
     #puts "@products_filtered - "+@products_filtered.to_s
       if params['file_type'].present? && params['file_type'] == 'ebay'
@@ -103,11 +103,11 @@ puts @filtered_params_for_view.present?
 
   # DELETE /products/1
   def destroy
-  @product.destroy
-  respond_to do |format|
-    format.html { redirect_to products_url, notice: "Product was successfully destroyed." }
-    format.json { head :no_content }
-  end
+    @product.destroy
+    respond_to do |format|
+      format.html { redirect_to products_url, notice: "Product was successfully destroyed." }
+      format.json { head :no_content }
+    end
   end
 
 # POST /products
@@ -125,7 +125,17 @@ puts @filtered_params_for_view.present?
   def xml_import
     Rails.env.development? ? Services::Import.product : ImportProductJob.perform_later
     Rails.env.development? ? Services::Import.product_quantity : ImportProductQuantityJob.perform_later
-    redirect_to products_path, notice: 'Запущен процесс Обновление Товаров InSales'
+    redirect_to products_path, notice: 'Запущен процесс Обновление Товаров InSales. Дождитесь письма о выполнении обновления'
+  end
+
+  def create_load_ebay_file
+    products_ids = Product.where.not(desc: [nil, ""]).order(:id).map{ |a| a.id if a.price_dollar.present? }.reject(&:blank?)
+    file_type = "ebay_for_load"
+    filename = "complete_"+file_type+".csv"
+    Product.create_ebay_file( products_ids, file_type )
+    Services::Ftp.send_file( filename )
+    flash[:notice] = 'Задача запущена. Ожидайте письма о завершении'
+    redirect_to products_path
   end
 
 

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     collection do
       post :delete_selected
       get :xml_import
+      get :create_load_ebay_file
     end
   end
   root to: 'visitors#index'

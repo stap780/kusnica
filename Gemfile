@@ -32,6 +32,7 @@ gem 'bcrypt_pbkdf', '< 2.0', :require => false
 gem 'ed25519', '~> 1.2', '>= 1.2.4'
 gem 'daemons'
 gem 'combinatorics'
+gem 'net-sftp', '~> 2.1', '>= 2.1.2'
 
 group :development do
   gem 'capistrano-rails'

@@ -37,8 +37,8 @@ class Product < ApplicationRecord
 		File.delete(file) if check.present?
 
     new_file = "#{Rails.public_path}"+'/complete_'+type+'.csv'
-		check = File.file?(file)
-		File.delete(file) if check.present?
+		check_new_file = File.file?(new_file)
+		File.delete(new_file) if check_new_file.present?
 
 		#создаём файл со статичными данными
 		@products = Product.where(id: products)#.limit(10000).offset(20000) #where('title like ?', '%Bellelli B-bip%')

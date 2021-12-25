@@ -7,7 +7,7 @@ class Services::Import
     Product.update_all(quantity: 0)
     Product.update_all(price_dollar: nil)
 
-    url = "https://kusnica.ru/marketplace/88195.xml"
+    url = "https://kusnica.ru/marketplace/88195.xml?lang=eng"
     filename = url.split('/').last
     download = open(url)
 		download_path = "#{Rails.public_path}"+"/"+filename
