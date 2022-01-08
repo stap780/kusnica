@@ -10,7 +10,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # GET <%= route_url %>
   def index
     #@<%= plural_table_name %> = <%= orm_class.all(class_name) %>
-    @search = <%= singular_table_name.titleize %>.ransack(params[:q])
+    @search = <%= orm_class.all(class_name) %>.ransack(params[:q])
     @search.sorts = 'id asc' if @search.sorts.empty?
     @<%= plural_table_name %> = @search.result.paginate(page: params[:page], per_page: 30)
   end
@@ -34,7 +34,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 
     respond_to do |format|
       if @<%= orm_instance.save %>
-        format.html { redirect_to @<%= singular_table_name %>, notice: <%= %("#{human_name} was successfully created.") %> }
+        format.html { redirect_to <%= index_helper %>_url, notice: <%= %("#{human_name} was successfully created.") %> }
         format.json { render :show, status: :created, location: <%= "@#{singular_table_name}" %> }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -48,7 +48,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   def update
   respond_to do |format|
     if @<%= orm_instance.update("#{singular_table_name}_params") %>
-      format.html { redirect_to @<%= singular_table_name %>, notice: <%= %("#{human_name} was successfully updated.") %> }
+      format.html { redirect_to <%= index_helper %>_url, notice: <%= %("#{human_name} was successfully updated.") %> }
       format.json { render :show, status: :ok, location: <%= "@#{singular_table_name}" %> }
     else
       format.html { render :edit, status: :unprocessable_entity }

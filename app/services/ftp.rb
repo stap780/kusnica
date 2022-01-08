@@ -5,8 +5,8 @@ class Services::Ftp
     puts '=====>>>> СТАРТ send_file ftp '+Time.now.to_s
 
     sftp_url = "mip.ebay.com"
-    username = Rails.application.secrets.ebay_username
-    password = Rails.application.secrets.ebay_password
+    username = EbaySetup.first.ebay_username || ''
+    password = EbaySetup.first.ebay_password || ''
     directory = "/store/product/#{filename}"
     localfile = "#{Rails.public_path}/#{filename}"
 

@@ -1,0 +1,20 @@
+
+<div class="row">
+<div class="col-6">
+  <strong>Ebay username:</strong>
+  <%= @ebay_setup.ebay_username %>
+</div>
+
+<div class="col-6">
+  <strong>Ebay password:</strong>
+  <%= @ebay_setup.ebay_password %>
+</div>
+
+</div>
+
+<div class="row">
+<div class="col-3 btn-group mt-5">
+<%= link_to 'Edit', edit_ebay_setup_path(@ebay_setup) , class: 'btn btn-success' %> |
+<%= link_to 'Back', ebay_setups_path, class: 'btn btn-outline-primary' %>
+</div>
+</div>

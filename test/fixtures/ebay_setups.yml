@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ebay_username: MyString
+  ebay_password: MyString
+
+two:
+  ebay_username: MyString
+  ebay_password: MyString

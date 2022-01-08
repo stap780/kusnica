@@ -1,0 +1,2 @@
+module EbaySetupsHelper
+end

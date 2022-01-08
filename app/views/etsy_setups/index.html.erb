@@ -1,0 +1,56 @@
+<div class="row justify-content-center align-items-center mb-2">
+<div class="col-2 row">
+  <div class="col-md-12 p-0">
+    <div class="h3">Etsy настройка</div>
+  </div>
+</div>
+  <div class="col-10 pl-0 pr-0 row">
+    <div class="col-12 mb-3">
+      <div class="btn-group p-0" role="group" aria-label="Button group with nested dropdown">
+        <div class="btn-group" role="group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown">Действия</button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <% if EtsySetup.count < 1 %>
+                <%= link_to 'Добавить настройку', new_etsy_setup_path, class: 'dropdown-item' if current_admin  %>
+            <% else %>
+              <%= link_to 'Редактировать настройку', edit_etsy_setup_path(EtsySetup.first), class: 'dropdown-item'  if current_admin %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-hover table-condensed">
+  <thead>
+    <tr class="bg-success">
+      <th><%= check_box_tag 'selectAll', value: 'selectAll'%></th>
+      <th>Api key</th>
+      <th>Api secret</th>
+      <th>Code</th>
+      <th>Token</th>
+      <th>Secret</th>
+    </tr>
+  </thead>
+
+  <tbody id="items_table">
+    <% @etsy_setups.limit(1).each do |etsy_setup| %>
+    <tr>
+        <td><%= check_box_tag "etsy_setup_ids[]", etsy_setup.id %></td>
+        <td><%= etsy_setup.api_key %></td>
+        <td><%= etsy_setup.api_secret %></td>
+        <td><%= etsy_setup.code %></td>
+        <td><%= etsy_setup.token %></td>
+        <td><%= etsy_setup.secret %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+
+<div class="apple_pagination">
+<%= will_paginate @etsy_setups %>
+</div>

@@ -33,6 +33,7 @@ gem 'ed25519', '~> 1.2', '>= 1.2.4'
 gem 'daemons'
 gem 'combinatorics'
 gem 'net-sftp', '~> 2.1', '>= 2.1.2'
+gem 'etsy', '~> 0.3.1'
 
 group :development do
   gem 'capistrano-rails'

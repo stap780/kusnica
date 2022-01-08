@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :ebay_setups
+  resources :etsy_setups
   resources :products do
     collection do
       post :delete_selected

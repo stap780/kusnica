@@ -1,0 +1,35 @@
+
+<div class="row">
+<div class="col-6">
+  <strong>Api key:</strong>
+  <%= @etsy_setup.api_key %>
+</div>
+
+<div class="col-6">
+  <strong>Api secret:</strong>
+  <%= @etsy_setup.api_secret %>
+</div>
+
+<div class="col-6">
+  <strong>Code:</strong>
+  <%= @etsy_setup.code %>
+</div>
+
+<div class="col-6">
+  <strong>Token:</strong>
+  <%= @etsy_setup.token %>
+</div>
+
+<div class="col-6">
+  <strong>Secret:</strong>
+  <%= @etsy_setup.secret %>
+</div>
+
+</div>
+
+<div class="row">
+<div class="col-3 btn-group mt-5">
+<%= link_to 'Edit', edit_etsy_setup_path(@etsy_setup) , class: 'btn btn-success' %> |
+<%= link_to 'Back', etsy_setups_path, class: 'btn btn-outline-primary' %>
+</div>
+</div>

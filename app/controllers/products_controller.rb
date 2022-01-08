@@ -129,6 +129,8 @@ class ProductsController < ApplicationController
   end
 
   def create_load_ebay_file
+    if EbaySetup.first.present?
+
     products_ids = Product.where.not(desc: [nil, ""]).order(:id).map{ |a| a.id if a.price_dollar.present? }.reject(&:blank?)
     file_type = "ebay_for_load"
     filename = "complete_"+file_type+".csv"
@@ -136,6 +138,11 @@ class ProductsController < ApplicationController
     Services::Ftp.send_file( filename )
     flash[:notice] = 'Задача запущена. Ожидайте письма о завершении'
     redirect_to products_path
+
+    else
+      flash[:notice] = 'Настройте интеграцию ebay'
+    end
+    
   end
 
 
