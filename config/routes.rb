@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       post :delete_selected
       get :xml_import
       get :create_load_ebay_file
+      get :create_update_etsy
     end
   end
   root to: 'visitors#index'

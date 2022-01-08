@@ -90,7 +90,7 @@
         <td><%= product.parametr.truncate(45) if product.parametr.present? %></td>
         <td><%= link_to '<span class="oi oi-eye"></span>'.html_safe, product.url, target: "_blank" %><br />ID: <%= product.ins_id %><br /> VAR_ID: <%= product.ins_var_id %></td>
         <td><%= product.ebay_id %></td>
-        <td><%= product.etsy_id %></td>
+        <td><%= link_to '<span class="oi oi-loop"></span>'.html_safe, create_update_etsy_products_path(product_id: product.id) %> <%= product.etsy_id %></td>
         <td><%= link_to '<span class="oi oi-trash"></span>'.html_safe, product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

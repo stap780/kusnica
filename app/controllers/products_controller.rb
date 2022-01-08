@@ -135,14 +135,24 @@ class ProductsController < ApplicationController
     file_type = "ebay_for_load"
     filename = "complete_"+file_type+".csv"
     Product.create_ebay_file( products_ids, file_type )
-    Services::Ftp.send_file( filename )
+    EbayFtpService.send_file( filename )
     flash[:notice] = 'Задача запущена. Ожидайте письма о завершении'
     redirect_to products_path
 
     else
       flash[:notice] = 'Настройте интеграцию ebay'
     end
-    
+
+  end
+
+  def create_update_etsy
+    if EtsySetup.first.present?
+      EtsyService.create_update(params[:product_id])
+      flash[:notice] = 'Товар создан/обновлён'
+      redirect_to products_path
+    else
+      flash[:notice] = 'Настройте интеграцию etsy'
+    end
   end
 
 
