@@ -5,8 +5,8 @@ namespace :etsy do
   task get_auth_data: :environment do
     require 'etsy'
     # эти данные берём из настроек etsy приложения и сохраняем
-    Etsy.api_key = '2cewf5lip5r8640r36uf1m4p'
-    Etsy.api_secret = 'o9lx3tfkye'
+    Etsy.api_key = Rails.application.secrets.etsy_api_key
+    Etsy.api_secret = Rails.application.secrets.etsy_api_secret
     #________________#
 
     Etsy.protocol = "https"
@@ -22,15 +22,15 @@ namespace :etsy do
     puts access_data.token
 
     # сохраняем token и secret для последующий работы по api с etsy
-    token = access_data.token # 6017feeb76b0af19aa9be6141be177
-    secret = access_data.secret # d087734a25
+    token = access_data.token # Rails.application.secrets.etsy_token
+    secret = access_data.secret # Rails.application.secrets.etsy_secret
     #________________#
     # установка и настройка работы по api закончена #
 
 
     # Алгоритм работы по API #
-    Etsy.api_key = '2cewf5lip5r8640r36uf1m4p'
-    Etsy.api_secret = 'o9lx3tfkye'
+    Etsy.api_key = Rails.application.secrets.etsy_api_key
+    Etsy.api_secret = Rails.application.secrets.etsy_api_secret
     # token - из базы данных
     # secret - из базы данных
     account_data = Etsy.myself(token, secret)
