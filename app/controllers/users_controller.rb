@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :authenticate_user_role!
 
   def index
     @search = User.ransack(params[:q])

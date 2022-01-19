@@ -33,10 +33,10 @@ namespace :etsy do
       Etsy.api_secret = Rails.application.secrets.etsy_api_secret
       token = EtsySetup.first.token # из базы данных
       secret = EtsySetup.first.secret # из базы данных
-      account_data = Etsy.myself(token, secret)
+      account = Etsy.myself(token, secret)
       # второй вариант получения листинга
       access = { access_token: token, access_secret: secret }
-      listings = Etsy::Listing.find_all_by_shop_id(account_data.shop.id, access.merge(:limit => 5))
+      listings = Etsy::Listing.find_all_by_shop_id(account.shop.id, access.merge(:limit => 5))
       # userID = account_data.result['user_id'] # '448860603'
       # loginNAME = account_data.result['login_name'] # 'y5uzpb86os0njyct'
       # user = Etsy.user(loginNAME)
@@ -53,14 +53,41 @@ namespace :etsy do
       Etsy.api_secret = Rails.application.secrets.etsy_api_secret
       token = EtsySetup.first.token
       secret = EtsySetup.first.secret
-      account_data = Etsy.myself(token, secret)
+      account = Etsy.myself(token, secret)
       access = { access_token: token, access_secret: secret }
-      shipping_template = Etsy::ShippingTemplate.find_by_user(user, access)
+      shipping_template = Etsy::ShippingTemplate.find_by_user(account, access)
       data = { title: 'тестовый продукт', quantity: 1, description: 'тестовый продукт описание', price: 100, who_made: 'i_did', when_made: '2020_2022', taxonomy_id: 2354, is_supply: false, language: 'ru',
         shipping_template_id: 165706336370 }
 
       listing = Etsy::Listing.create( access.merge(data) )
       listing_id = JSON.parse(listing.body)['results'][0]['listing_id']
+    end
+
+    task add_image: :environment do
+      require 'etsy'
+      require 'open-uri'
+      Etsy.api_key = Rails.application.secrets.etsy_api_key
+      Etsy.api_secret = Rails.application.secrets.etsy_api_secret
+      token = EtsySetup.first.token
+      secret = EtsySetup.first.secret
+      account = Etsy.myself(token, secret)
+      access = { access_token: token, access_secret: secret }
+  #test listing = listing_id"=>1142337634
+      listing = Etsy::Listing.find( 1142337634 )
+      product = Product.find(545)
+      images = product.image.split(' ')
+      if images.present?
+        images.each do |image|
+          filename = image.split('/').last
+          download_path = "#{Rails.public_path}"+"/"+filename
+          download = open(image)
+          IO.copy_stream(download, download_path)
+
+          Etsy::Image.create( listing, download_path, access )
+
+          File.delete(download_path) if File.file?(download_path).present?
+        end
+      end
     end
 
 end

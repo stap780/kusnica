@@ -22,15 +22,17 @@ class Services::Import
     end
 
     offers.each_with_index do |pr, i|
-      params = pr.xpath("param").present? ? pr.xpath("param").map{ |p| p["name"]+":"+p.text }.join(' --- ') : ''
+      params = pr.xpath("param").present? ? pr.xpath("param").map{ |p| p["name"]+":"+p.text if p["name"] != "Цена EBAY"}.join(' --- ') : ''
       price_dollar = pr.xpath("param").map{ |p| p.text if p["name"] == "Цена EBAY" }.reject(&:blank?)[0]
       # puts price_dollar.to_s
 
       data = {
         sku: pr.xpath("sku").text,
         title: pr.xpath("model").text,
+        title_en: pr.xpath("title_en").text,
         url: pr.xpath("url").text,
         desc: pr.xpath("description").text,
+        desc_en: pr.xpath("desc_en").text,
         image: pr.xpath("picture").map(&:text).join(' '),
         cat: categories[pr.xpath("categoryId").text],
         price: pr.xpath("price").text.to_f,

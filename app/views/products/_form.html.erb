@@ -9,19 +9,27 @@
     <%= f.input :sku %>
     <%= f.input :title %>
     <%= f.input :desc %>
+    <%= f.input :title_en %>
+    <%= f.input :desc_en %>
     <%= f.input :cat %>
     <%= f.input :oldprice %>
     <%= f.input :price %>
     <%= f.input :price_dollar %>
     <%= f.input :quantity %>
-    <%= f.input :image %>
-    <%= f.input :url %>
+    <%= f.input :url, disabled: true %>
     <%= f.input :parametr %>
-    <%= f.input :ins_id %>
-    <%= f.input :ins_var_id %>
-    <%= f.input :ebay_id %>
-    <%= f.input :etsy_id %>
-</div>
+    <%= f.input :ins_id, disabled: true  %>
+    <%= f.input :ins_var_id, disabled: true  %>
+    <%= f.input :ebay_id, disabled: true  %>
+    <%= f.input :etsy_id, disabled: true  %>
+    </div>
+    <div class="col-6">
+      <% if @product.image.present? %>
+          <%= render 'image_gallery', :images => @product.image.split(' ')%>
+      <% else %>
+      <%= f.input :image %>
+      <% end %>
+    </div>
 </div>
   <div class="row">
   <div class="col-3 btn-group mt-5">

@@ -6,6 +6,7 @@ class Product < ApplicationRecord
 	scope :all_product_size, -> { all_product.size }
 	scope :all_product_not_nil, -> { all_product.where('quantity >= ?', 1) }
 	scope :all_product_not_nil_size, -> { all_product_not_nil.size }
+  scope :ebay_products, -> {all_product.where.not(title_en: [nil, ''], desc_en: [nil, ''])}
 
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
@@ -41,7 +42,7 @@ class Product < ApplicationRecord
 		File.delete(new_file) if check_new_file.present?
 
 		#создаём файл со статичными данными
-		@products = Product.where(id: products)#.limit(10000).offset(20000) #where('title like ?', '%Bellelli B-bip%')
+		@products = Product.ebay_products#.limit(10000).offset(20000) #where('title like ?', '%Bellelli B-bip%')
 
 		CSV.open( file, 'w') do |writer|
       images = Array(1..10).map{|a| "Picture URL "+a.to_s}
@@ -123,11 +124,10 @@ class Product < ApplicationRecord
 	end
 
 
-
-def normalize_data_white_space
-  self.attributes.each do |key, value|
-    self[key] = value.squish if value.respond_to?("squish")
+  def normalize_data_white_space
+    self.attributes.each do |key, value|
+      self[key] = value.squish if value.respond_to?("squish")
+    end
   end
-end
 
 end

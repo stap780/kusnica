@@ -1,7 +1,6 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!
-  before_action :authenticate_user_role!
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :create_update_etsy, :destroy]
 
   # GET /products
   def index
@@ -17,7 +16,7 @@ class ProductsController < ApplicationController
     @products = @search.result.paginate(page: params[:page], per_page: 100)
 
     @filtered_params_for_view = params[:q].present? ? params[:q].reject{ |k,v| !v.present? } : {}
-    puts @filtered_params_for_view.present?
+    # puts @filtered_params_for_view.present?
     products_filtered_id_arr = Product.ransack(new_q).result.pluck(:id)
     #puts "@products_filtered - "+@products_filtered.to_s
       if params['file_type'].present? && params['file_type'] == 'ebay'
@@ -131,7 +130,7 @@ class ProductsController < ApplicationController
   def create_load_ebay_file
     if EbaySetup.first.present?
 
-    products_ids = Product.where.not(desc: [nil, ""]).order(:id).map{ |a| a.id if a.price_dollar.present? }.reject(&:blank?)
+    products_ids = Product.ebay_products.map{ |a| a.id if a.price_dollar.present? }.reject(&:blank?)
     file_type = "ebay_for_load"
     filename = "complete_"+file_type+".csv"
     Product.create_ebay_file( products_ids, file_type )
@@ -147,9 +146,14 @@ class ProductsController < ApplicationController
 
   def create_update_etsy
     if EtsySetup.first.present?
+      if @product.quantity > 0
       EtsyService.create_update(params[:product_id])
       flash[:notice] = 'Товар создан/обновлён'
       redirect_to products_path
+      else
+        flash[:notice] = 'Кол-во товара 0. Не можем создать листинг'
+        redirect_back(fallback_location: products_path)
+      end
     else
       flash[:notice] = 'Настройте интеграцию etsy'
     end
@@ -164,6 +168,6 @@ class ProductsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def product_params
-      params.require(:product).permit(:sku, :title, :desc, :cat, :oldprice, :price, :price_dollar, :quantity, :image, :url, :parametr, :ins_id, :ins_var_id, :ebay_id, :etsy_id)
+      params.require(:product).permit(:sku, :title, :desc, :title_en, :desc_en, :cat, :oldprice, :price, :price_dollar, :quantity, :image, :url, :parametr, :ins_id, :ins_var_id, :ebay_id, :etsy_id)
     end
 end

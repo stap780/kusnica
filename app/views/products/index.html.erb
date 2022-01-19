@@ -53,7 +53,9 @@
       <th><%= check_box_tag 'selectAll', value: 'selectAll'%></th>
       <th>Sku</th>
       <th style="width: 16.66%">Title</th>
+      <th>Title En</th>
       <th>Desc</th>
+      <th>Desc En</th>
       <th>Cat</th>
       <th>Oldprice</th>
       <th>Price</th>
@@ -72,25 +74,31 @@
     <% @products.each do |product| %>
     <tr>
         <td><%= check_box_tag "product_ids[]", product.id %></td>
-        <td><%= product.sku %></td>
-        <td><%= link_to product.title, edit_product_path(product)  %></td>
+        <td><%= link_to product.sku, edit_product_path(product)  %></td>
+        <td><%= product.title %></td>
+        <td><% if product.title_en.present? %>есть<%else%>нет<%end%></td>
         <td><% if product.desc.present? %>есть<%else%>нет<%end%></td>
+        <td><% if product.desc_en.present? %>есть<%else%>нет<%end%></td>
         <td><%= product.cat %></td>
         <td><%= product.oldprice %></td>
         <td><%= product.price %></td>
         <td><%= product.price_dollar %></td>
         <td><%= product.quantity %></td>
-        <td><div class="row pl-3 pr-3">
+        <td>
           <% if product.image.present? %>
-            <% product.image.split(' ').first(4).each do |pict| %>
-                <div class="col-md-4 p-0"><img class="img-thumbnail" src="<%= pict %>"></div>
-            <% end %>
-          <% end %></div>
+          <%= render 'image_gallery', :images => product.image.split(' ').first(4) %>
+         <% end %>
         </td>
         <td><%= product.parametr.truncate(45) if product.parametr.present? %></td>
         <td><%= link_to '<span class="oi oi-eye"></span>'.html_safe, product.url, target: "_blank" %><br />ID: <%= product.ins_id %><br /> VAR_ID: <%= product.ins_var_id %></td>
         <td><%= product.ebay_id %></td>
-        <td><%= link_to '<span class="oi oi-loop"></span>'.html_safe, create_update_etsy_products_path(product_id: product.id) %> <%= product.etsy_id %></td>
+        <td>
+          <% if product.etsy_id.present? %>
+          <%= link_to '<span class="oi oi-loop"></span>'.html_safe, create_update_etsy_products_path(product) %> <%= product.etsy_id %>
+          <% else %>
+          <%= link_to 'добавить', create_update_etsy_products_path(product) %>
+          <% end %>
+        </td>
         <td><%= link_to '<span class="oi oi-trash"></span>'.html_safe, product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

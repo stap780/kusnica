@@ -6,8 +6,6 @@ class ApplicationController < ActionController::Base
   before_action :allow_cross_domain_ajax
   helper_method :current_admin
   helper_method :authenticate_admin!
-  helper_method :authenticate_user_role!
-
 
   def allow_cross_domain_ajax
       headers['Access-Control-Allow-Origin'] = '*'
@@ -26,11 +24,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authenticate_user_role!
-    if current_user.role.name == 'registered'
-      redirect_to root_path, alert: "Дождитесь проверки от админа. Мы отправили ему письмо про вашу регистрацию"
-    end
-  end
 
 protected
 
@@ -39,6 +32,16 @@ def configure_permitted_parameters
   attributes = [:name, :email, :role_id]
   devise_parameter_sanitizer.permit(:sign_up, keys: attributes)
   devise_parameter_sanitizer.permit(:account_update, keys: attributes)
+end
+
+def authenticate_user!
+  if current_user.present? && current_user.role.name == 'registered'
+    sign_out current_user
+    # sign_out_and_redirect(current_user)
+    # redirect_to root_path
+  else
+    super
+  end
 end
 
 
