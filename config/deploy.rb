@@ -48,7 +48,9 @@ set :log_level, :info
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 after 'deploy:publishing', 'unicorn:restart'
 
-
+if Rake::Task.task_defined?('deploy:published')
+  after 'deploy:published', 'delayed_job:default'
+end
 
 
 # set :application, 'my_app_name'
