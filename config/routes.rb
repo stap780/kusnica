@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       get :xml_import
       get :create_load_ebay_file
       get :create_etsy_products
+      get :update_etsy_products
       get '/:id/create_update_one_etsy', action: 'create_update_one_etsy', as: 'create_update_one_etsy'
     end
   end
