@@ -163,14 +163,29 @@ class ProductsController < ApplicationController
     end
   end
 
-  def create_update_one_etsy
+  def create_one_etsy
     if EtsySetup.first.present?
       if @product.quantity > 0
         Services::Etsy.create_update_one(@product.id)
-        flash[:notice] = 'Товар создан/обновлён'
+        flash[:notice] = 'Товар создан'
         redirect_back(fallback_location: products_path)
       else
         flash[:notice] = 'Кол-во товара 0. Не можем создать листинг'
+        redirect_back(fallback_location: products_path)
+      end
+    else
+      flash[:notice] = 'Настройте интеграцию etsy'
+    end
+  end
+
+  def update_one_etsy
+    if EtsySetup.first.present?
+      if @product.etsy_id.present?
+        Services::Etsy.create_update_one(@product.id)
+        flash[:notice] = 'Товар обновлён'
+        redirect_back(fallback_location: products_path)
+      else
+        flash[:notice] = 'товар не создан в etsy'
         redirect_back(fallback_location: products_path)
       end
     else

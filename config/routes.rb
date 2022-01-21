@@ -9,7 +9,8 @@ Rails.application.routes.draw do
       get :create_load_ebay_file
       get :create_etsy_products
       get :update_etsy_products
-      get '/:id/create_update_one_etsy', action: 'create_update_one_etsy', as: 'create_update_one_etsy'
+      get '/:id/create_one_etsy', action: 'create_one_etsy', as: 'create_one_etsy'
+      get '/:id/update_one_etsy', action: 'update_one_etsy', as: 'update_one_etsy'
     end
   end
   root to: 'visitors#index'

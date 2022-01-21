@@ -111,9 +111,9 @@
           <br />
           etsy_id:
           <% if product.etsy_id.present? %>
-          <%= link_to '<span class="oi oi-loop"></span>'.html_safe, create_update_one_etsy_products_path(product) %> <%= product.etsy_id %>
+          <%= link_to '<span class="oi oi-loop"></span>'.html_safe, update_one_etsy_products_path(product) %> <%= product.etsy_id %>
           <% else %>
-          <%= link_to 'добавить', create_update_one_etsy_products_path(product) %>
+          <%= link_to 'добавить', create_one_etsy_products_path(product) %>
           <% end %>
         </td>
         <td><%= link_to '<span class="oi oi-trash"></span>'.html_safe, product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
