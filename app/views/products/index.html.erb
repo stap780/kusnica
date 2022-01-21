@@ -78,7 +78,7 @@
     <tr>
         <td><%= check_box_tag "product_ids[]", product.id %></td>
         <td><%= link_to product.id, edit_product_path(product)  %></td>
-        <td><%= product.sku.truncate(10) if  product.sku.present? %></td>
+        <td><%= product.sku.truncate(7) if  product.sku.present? %></td>
         <td><%= product.title %></td>
         <td><% if product.title_en.present? %>есть<%else%>нет<%end%></td>
         <td><% if product.desc.present? %>есть<%else%>нет<%end%></td>
@@ -95,7 +95,7 @@
         </td>
         <td><%= product.parametr.truncate(45) if product.parametr.present? %></td>
         <td>ID: <%= product.ins_id %><br />VAR_ID: <%= product.ins_var_id %><br /><%= link_to '<span class="oi oi-eye"></span>'.html_safe, product.url, target: "_blank" %></td>
-        <td>status_ebay : <% if product.status_ebay %>
+        <td>st_ebay : <% if product.status_ebay %>
           <%= check_box_tag 'status_ebay', 'status_ebay', true , disabled: true %>
           <% else %>
           <%= check_box_tag 'status_ebay', 'status_ebay', false , disabled: true %>
@@ -103,7 +103,7 @@
           <br />
           ebay_id: <%= product.ebay_id %>
         </td>
-        <td>status_etsy : <% if product.status_etsy %>
+        <td>st_etsy : <% if product.status_etsy %>
           <%= check_box_tag 'status_etsy', 'status_etsy', true , disabled: true %>
           <% else %>
           <%= check_box_tag 'status_etsy', 'status_etsy', false , disabled: true %>
