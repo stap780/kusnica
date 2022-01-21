@@ -1,4 +1,5 @@
 class Services::Etsy
+  require 'open-uri'
 
   Etsy.api_key = EtsySetup.first.api_key
   Etsy.api_secret = EtsySetup.first.api_secret
@@ -19,9 +20,9 @@ class Services::Etsy
 
   def self.create_update_one(product_id)
     product = Product.find(product_id)
-    puts "product.id.to_s - "+product.id.to_s
-    puts product.etsy_id.is_a?String
-    puts "product.etsy_id.to_s - "+product.etsy_id.to_s
+    # puts "product.id.to_s - "+product.id.to_s
+    # puts product.etsy_id.is_a?String
+    # puts "product.etsy_id.to_s - "+product.etsy_id.to_s
     data = {
       title: product.title,
       sku: product.ins_id,
