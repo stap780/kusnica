@@ -59,7 +59,7 @@ class Services::Etsy
         download = open(image)
         IO.copy_stream(download, download_path)
 
-        Etsy::Image.create( listing, download_path, access )
+        Etsy::Image.create( listing, download_path, @access )
 
         File.delete(download_path) if File.file?(download_path).present?
       end
