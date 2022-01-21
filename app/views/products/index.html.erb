@@ -53,6 +53,7 @@
   <thead>
     <tr class="bg-success">
       <th><%= check_box_tag 'selectAll', 'selectAll'%></th>
+      <th>id</th>
       <th>Sku</th>
       <th style="width: 16.66%">Title</th>
       <th>Title En</th>
@@ -76,7 +77,8 @@
     <% @products.each do |product| %>
     <tr>
         <td><%= check_box_tag "product_ids[]", product.id %></td>
-        <td><%= link_to product.sku, edit_product_path(product)  %></td>
+        <td><%= link_to product.id, edit_product_path(product)  %></td>
+        <td><%= product.sku.truncate(10) if  product.sku.present? %></td>
         <td><%= product.title %></td>
         <td><% if product.title_en.present? %>есть<%else%>нет<%end%></td>
         <td><% if product.desc.present? %>есть<%else%>нет<%end%></td>
