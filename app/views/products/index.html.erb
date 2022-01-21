@@ -52,7 +52,7 @@
   <table class="table table-hover table-condensed table-sm">
   <thead>
     <tr class="bg-success">
-      <th><%= check_box_tag 'selectAll', value: 'selectAll'%></th>
+      <th><%= check_box_tag 'selectAll', 'selectAll'%></th>
       <th>Sku</th>
       <th style="width: 16.66%">Title</th>
       <th>Title En</th>
@@ -92,9 +92,22 @@
          <% end %>
         </td>
         <td><%= product.parametr.truncate(45) if product.parametr.present? %></td>
-        <td><%= link_to '<span class="oi oi-eye"></span>'.html_safe, product.url, target: "_blank" %><br />ID: <%= product.ins_id %><br /> VAR_ID: <%= product.ins_var_id %></td>
-        <td><%= product.ebay_id %></td>
-        <td>
+        <td>ID: <%= product.ins_id %><br />VAR_ID: <%= product.ins_var_id %><br /><%= link_to '<span class="oi oi-eye"></span>'.html_safe, product.url, target: "_blank" %></td>
+        <td>status_ebay : <% if product.status_ebay %>
+          <%= check_box_tag 'status_ebay', 'status_ebay', true , disabled: true %>
+          <% else %>
+          <%= check_box_tag 'status_ebay', 'status_ebay', false , disabled: true %>
+          <% end %>
+          <br />
+          ebay_id: <%= product.ebay_id %>
+        </td>
+        <td>status_etsy : <% if product.status_etsy %>
+          <%= check_box_tag 'status_etsy', 'status_etsy', true , disabled: true %>
+          <% else %>
+          <%= check_box_tag 'status_etsy', 'status_etsy', false , disabled: true %>
+          <% end %>
+          <br />
+          etsy_id:
           <% if product.etsy_id.present? %>
           <%= link_to '<span class="oi oi-loop"></span>'.html_safe, create_update_one_etsy_products_path(product) %> <%= product.etsy_id %>
           <% else %>
