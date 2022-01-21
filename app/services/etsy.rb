@@ -19,6 +19,9 @@ class Services::Etsy
 
   def self.create_update_one(product_id)
     product = Product.find(product_id)
+    puts "product.id.to_s - "+product.id.to_s
+    puts product.etsy_id.is_a?String
+    puts "product.etsy_id.to_s - "+product.etsy_id.to_s
     data = {
       title: product.title,
       sku: product.ins_id,
@@ -32,8 +35,9 @@ class Services::Etsy
       language: 'ru',
       shipping_template_id: 165706336370
     }
-    if product.etsy_id.to_s.present?
-      Etsy::Listing.update( product.etsy_id.to_s, @access.merge(data) )
+    if product.etsy_id.present?
+      listing = Etsy::Listing.find( product.etsy_id )
+      Etsy::Listing.update( listing, @access.merge(data) )
     else
       listing = Etsy::Listing.create( @access.merge(data) )
       listing_id = JSON.parse(listing.body)['results'][0]['listing_id']
@@ -45,7 +49,7 @@ class Services::Etsy
 
   def self.update_image(product_id)
     product = Product.find(product_id)
-    listing = Etsy::Listing.find( product.etsy_id.to_s )
+    listing = Etsy::Listing.find( product.etsy_id )
     images = product.image.split(' ')
     if images.present?
       images.each do |image|
