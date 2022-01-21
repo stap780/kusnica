@@ -25,6 +25,10 @@ class Services::Import
       params = pr.xpath("param").present? ? pr.xpath("param").map{ |p| p["name"]+":"+p.text if p["name"] != "Цена EBAY"}.join(' --- ') : ''
       price_dollar = pr.xpath("param").map{ |p| p.text if p["name"] == "Цена EBAY" }.reject(&:blank?)[0]
       # puts price_dollar.to_s
+      file_ebay_status = pr.xpath("param").map{ |p| p.text if p["name"] == "Выгрузить в Ebay" }.reject(&:blank?)[0]
+      file_etsy_status = pr.xpath("param").map{ |p| p.text if p["name"] == "Выгрузить в Etsy" }.reject(&:blank?)[0]
+      status_ebay = file_ebay_status.present? && file_ebay_status == 'да' ? true : false
+      status_etsy = file_etsy_status.present? && file_etsy_status == 'да' ? true : false
 
       data = {
         sku: pr.xpath("sku").text,
@@ -40,7 +44,9 @@ class Services::Import
         oldprice: pr.xpath("oldprice").text.to_f,
         parametr: params,
         ins_id: pr["group_id"],
-        ins_var_id: pr["id"]
+        ins_var_id: pr["id"],
+        status_ebay: status_ebay,
+        status_etsy: status_etsy
       }
 
       product = Product.find_by(ins_var_id: data[:ins_var_id])

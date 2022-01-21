@@ -5,7 +5,9 @@
 
   <div class="row">
     <div class="col-12 h3"><%= page_title %></div>
-    <div class="col-6">
+    <div class="col-6 row">
+    <%= f.input :status_ebay, disabled: true, as: :boolean , boolean_style: :inline, wrapper_html: { class: "col-md-6" }%>
+    <%= f.input :status_etsy, disabled: true, as: :boolean , boolean_style: :inline, wrapper_html: { class: "col-md-6" }%>
     <%= f.input :sku %>
     <%= f.input :title %>
     <%= f.input :desc %>

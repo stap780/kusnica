@@ -1,4 +1,4 @@
-class EbayFtpService
+class Services::Ebay
 
   def self.send_file(filename)
     require 'net/sftp'

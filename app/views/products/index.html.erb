@@ -23,20 +23,20 @@
   </div>
   <%= search_form_for @search, {class: 'form-inline col-12 pl-0 pr-0'} do |f| %>
     <div class="input-group input-group-sm">
-      <%= f.search_field :sku_eq , placeholder: 'sku', class: "form-control", style: "max-width: 180px;" %>
-      <%= f.search_field :title_eq , placeholder: 'title', class: "form-control", style: "max-width: 180px;" %>
-      <%= f.search_field :desc_eq , placeholder: 'desc', class: "form-control", style: "max-width: 180px;" %>
-      <%= f.select :cat_eq, Product.order(cat: :asc).pluck(:cat).uniq, { include_blank: false, prompt: 'Cat'}, class: "form-select", style: "max-width: 180px;" %>
-      <%= f.search_field :price_eq , placeholder: 'price', class: "form-control", style: "max-width: 180px;" %>
-      <%= f.select :price_dollar_null , [['нет', true],['есть', false]], { include_blank: false, prompt: 'price $'}, class: "form-select", style: "max-width: 180px;" %>
-      <%= f.select :quantity_in, [['все','all'],['> 0', 1],['= 0', 0]], { include_blank: false, prompt: 'Кол-во'}, class: "form-select", style: "max-width: 180px;" %>
+      <%= f.select :status_ebay_true,[['да', true],['нет', false]], prompt: 'st ebay', class: "form-select", style: "min-width: 140px;" %>
+      <%= f.select :status_etsy_true,[['да', true],['нет', false]], prompt: 'st etsy', class: "form-select", style: "min-width: 140px;" %>
+      <%= f.search_field :sku_or_title_or_desc_cont , placeholder: 'sku title desc', class: "form-control", style: "min-width: 180px;" %>
+      <%= f.select :cat_eq, Product.order(cat: :asc).pluck(:cat).uniq, { include_blank: false, prompt: 'Cat'}, class: "form-select", style: "min-width: 140px;" %>
+      <%= f.search_field :price_eq , placeholder: 'price', class: "form-control", style: "min-width: 130px;" %>
+      <%= f.select :price_dollar_null , [['нет', true],['есть', false]], { include_blank: false, prompt: '$price'}, class: "form-select", style: "max-width: 120px;" %>
+      <%= f.select :quantity_in, [['все','all'],['> 0', 1],['= 0', 0]], { include_blank: false, prompt: 'Кол-во'}, class: "form-select", style: "max-width: 110px;" %>
       <%# f.search_field :image_eq , placeholder: 'image', class: "form-control", style: "max-width: 180px;" %>
       <%# f.search_field :url_eq , placeholder: 'url', class: "form-control", style: "max-width: 180px;" %>
       <%= f.search_field :parametr_cont , placeholder: 'parametr', class: "form-control", style: "max-width: 180px;" %>
       <%= f.search_field :ins_id_eq , placeholder: 'ins_id', class: "form-control", style: "max-width: 180px;" %>
       <%# f.search_field :ins_var_id_eq , placeholder: 'ins_var_id', class: "form-control", style: "max-width: 180px;" %>
-      <%= f.search_field :ebay_id_eq , placeholder: 'ebay_id', class: "form-control", style: "max-width: 180px;" %>
-      <%= f.search_field :etsy_id_eq , placeholder: 'etsy_id', class: "form-control", style: "max-width: 180px;" %>
+      <%# f.search_field :ebay_id_eq , placeholder: 'ebay_id', class: "form-control", style: "max-width: 180px;" %>
+      <%# f.search_field :etsy_id_eq , placeholder: 'etsy_id', class: "form-control", style: "max-width: 180px;" %>
       <%= button_tag(type: 'submit', :class => "btn btn-info") do %><span class="oi oi-magnifying-glass"></span><% end %>
       <%= link_to '<span class="oi oi-reload"></span>'.html_safe, products_path, class: 'btn btn-outline-dark ' %>
       <%= render "filtered_file" %>
@@ -94,9 +94,9 @@
         <td><%= product.ebay_id %></td>
         <td>
           <% if product.etsy_id.present? %>
-          <%= link_to '<span class="oi oi-loop"></span>'.html_safe, create_update_etsy_products_path(product) %> <%= product.etsy_id %>
+          <%= link_to '<span class="oi oi-loop"></span>'.html_safe, create_update_one_etsy_products_path(product) %> <%= product.etsy_id %>
           <% else %>
-          <%= link_to 'добавить', create_update_etsy_products_path(product) %>
+          <%= link_to 'добавить', create_update_one_etsy_products_path(product) %>
           <% end %>
         </td>
         <td><%= link_to '<span class="oi oi-trash"></span>'.html_safe, product, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -1,4 +1,4 @@
-class EtsyService
+class Services::Etsy
 
   Etsy.api_key = EtsySetup.first.api_key
   Etsy.api_secret = EtsySetup.first.api_secret
@@ -7,8 +7,17 @@ class EtsyService
   @account = Etsy.myself(token, secret)
   @access = { access_token: token, access_secret: secret }
 
-  def self.create_update(product_id)
 
+  def self.create_update_products(product_ids)
+    product_ids.each do |product_id|
+      Services::Etsy.create_update_one(product_id)
+    end
+
+    current_process = "=====>>>> FINISH ETSY create_update_products - #{Time.now.to_s}"
+  	ProductMailer.notifier_process(current_process).deliver_now
+  end
+
+  def self.create_update_one(product_id)
     product = Product.find(product_id)
     data = {
       title: product.title,
@@ -31,7 +40,7 @@ class EtsyService
       product.etsy_id = listing_id
       product.save
     end
-
+    Services::Etsy.update_image(product_id)
   end
 
   def self.update_image(product_id)
@@ -53,7 +62,7 @@ class EtsyService
   end
 
   def self.get_listings_count
-    listings = Etsy::Listing.find_all_by_shop_id(@account.shop.id, @access.merge(:limit => 200))
+    listings = Etsy::Listing.find_all_by_shop_id(@account.shop.id, @access.merge(:limit => 500))
     puts "Всего товаров - "+listings.count.to_s
   end
 

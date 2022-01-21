@@ -129,27 +129,46 @@ class ProductsController < ApplicationController
 
   def create_load_ebay_file
     if EbaySetup.first.present?
-
-    products_ids = Product.ebay_products.map{ |a| a.id if a.price_dollar.present? }.reject(&:blank?)
-    file_type = "ebay_for_load"
-    filename = "complete_"+file_type+".csv"
-    Product.create_ebay_file( products_ids, file_type )
-    EbayFtpService.send_file( filename )
-    flash[:notice] = 'Задача запущена. Ожидайте письма о завершении'
-    redirect_to products_path
-
+      products_ids = Product.ebay_products.map{ |a| a.id if a.price_dollar.present? }.reject(&:blank?)
+      file_type = "ebay_for_load"
+      filename = "complete_"+file_type+".csv"
+      Product.create_ebay_file( products_ids, file_type )
+      Services::Ebay.send_file( filename )
+      flash[:notice] = 'Задача запущена. Ожидайте письма о завершении'
+      redirect_to products_path
     else
       flash[:notice] = 'Настройте интеграцию ebay'
     end
-
   end
 
-  def create_update_etsy
+  def create_etsy_products   # создаём отдельно так как создать можно только положительный товар
+    if EbaySetup.first.present?
+      products_ids = Product.etsy_products_not_nil.map{ |a| a.id if a.price.present? }.reject(&:blank?)
+      Rails.env.development? ? Services::Etsy.create_update_products(products_ids) : EtsyProductJob.perform_later(products_ids)
+      flash[:notice] = 'Задача запущена. Ожидайте письма о завершении'
+      redirect_to products_path
+    else
+      flash[:notice] = 'Настройте интеграцию etsy'
+    end
+  end
+
+  def update_etsy_products
+    if EbaySetup.first.present?
+      products_ids = Product.etsy_products.map{ |a| a.id if a.price.present? }.reject(&:blank?)
+      Rails.env.development? ? Services::Etsy.create_update_products(products_ids) : EtsyProductJob.perform_later(products_ids)
+      flash[:notice] = 'Задача запущена. Ожидайте письма о завершении'
+      redirect_to products_path
+    else
+      flash[:notice] = 'Настройте интеграцию etsy'
+    end
+  end
+
+  def create_update_one_etsy
     if EtsySetup.first.present?
       if @product.quantity > 0
-      EtsyService.create_update(params[:product_id])
-      flash[:notice] = 'Товар создан/обновлён'
-      redirect_to products_path
+        Services::Etsy.create_update_one(@product.id)
+        flash[:notice] = 'Товар создан/обновлён'
+        redirect_back(fallback_location: products_path)
       else
         flash[:notice] = 'Кол-во товара 0. Не можем создать листинг'
         redirect_back(fallback_location: products_path)
@@ -168,6 +187,6 @@ class ProductsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def product_params
-      params.require(:product).permit(:sku, :title, :desc, :title_en, :desc_en, :cat, :oldprice, :price, :price_dollar, :quantity, :image, :url, :parametr, :ins_id, :ins_var_id, :ebay_id, :etsy_id)
+      params.require(:product).permit( :sku, :title, :desc, :title_en, :desc_en, :cat, :oldprice, :price, :price_dollar, :quantity, :image, :url, :parametr, :ins_id, :ins_var_id, :ebay_id, :etsy_id, :status_ebay, :status_etsy )
     end
 end
