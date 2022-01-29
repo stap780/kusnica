@@ -18,3 +18,15 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+
+env :PATH, ENV['PATH']
+env "GEM_HOME", ENV["GEM_HOME"]
+set :output, "#{path}/log/cron.log"
+set :chronic_options, :hours24 => true
+
+every 1.day, :at => '18:50' do
+  runner "ImportProductJob.perform_later"
+end
+every 1.day, :at => '19:00' do
+  runner "ImportProductQuantityJob.perform_later"
+end
