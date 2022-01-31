@@ -22,8 +22,9 @@ class Services::Import
     end
 
     offers.each_with_index do |pr, i|
-      params = pr.xpath("param").present? ? pr.xpath("param").map{ |p| p["name"]+":"+p.text if p["name"] != "Цена EBAY"}.join(' --- ') : ''
+      params = pr.xpath("param").present? ? pr.xpath("param").map{ |p| p["name"]+":"+p.text if p["name"] != "Цена EBAY" && p["name"] != "Цена Etsy"}.join(' --- ') : ''
       price_dollar = pr.xpath("param").map{ |p| p.text if p["name"] == "Цена EBAY" }.reject(&:blank?)[0]
+      price_etsy = pr.xpath("param").map{ |p| p.text if p["name"] == "Цена Etsy" }.reject(&:blank?)[0]
       # puts price_dollar.to_s
       file_ebay_status = pr.xpath("param").map{ |p| p.text if p["name"] == "Выгрузить в Ebay" }.reject(&:blank?)[0]
       file_etsy_status = pr.xpath("param").map{ |p| p.text if p["name"] == "Выгрузить в Etsy" }.reject(&:blank?)[0]
@@ -41,6 +42,7 @@ class Services::Import
         cat: categories[pr.xpath("categoryId").text],
         price: pr.xpath("price").text.to_f,
         price_dollar: price_dollar.to_f,
+        price_etsy: price_etsy.to_f,
         oldprice: pr.xpath("oldprice").text.to_f,
         parametr: params,
         ins_id: pr["group_id"],
@@ -58,6 +60,7 @@ class Services::Import
     end
 
     Product.where( price_dollar: 0 ).update_all(price_dollar: nil)
+    Product.where( price_etsy: 0 ).update_all(price_etsy: nil)
 
     File.delete(download_path) if File.file?(download_path).present?
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_20_123030) do
+ActiveRecord::Schema.define(version: 2022_01_31_101509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2022_01_20_123030) do
     t.string "desc_en"
     t.boolean "status_ebay"
     t.boolean "status_etsy"
+    t.decimal "price_etsy"
   end
 
   create_table "roles", force: :cascade do |t|

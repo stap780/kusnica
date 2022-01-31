@@ -31,6 +31,7 @@
       <%= f.select :cat_eq, Product.order(cat: :asc).pluck(:cat).uniq, { include_blank: false, prompt: 'Cat'}, class: "form-select", style: "min-width: 140px;" %>
       <%= f.search_field :price_eq , placeholder: 'price', class: "form-control", style: "min-width: 130px;" %>
       <%= f.select :price_dollar_null , [['нет', true],['есть', false]], { include_blank: false, prompt: '$price'}, class: "form-select", style: "max-width: 120px;" %>
+      <%= f.select :price_etsy_null , [['нет', true],['есть', false]], { include_blank: false, prompt: 'price etsy'}, class: "form-select", style: "max-width: 120px;" %>
       <%= f.select :quantity_in, [['все','all'],['> 0', 1],['= 0', 0]], { include_blank: false, prompt: 'Кол-во'}, class: "form-select", style: "max-width: 110px;" %>
       <%# f.search_field :image_eq , placeholder: 'image', class: "form-control", style: "max-width: 180px;" %>
       <%# f.search_field :url_eq , placeholder: 'url', class: "form-control", style: "max-width: 180px;" %>
@@ -61,8 +62,7 @@
       <th>Desc En</th>
       <th>Cat</th>
       <th>Oldprice</th>
-      <th>Price</th>
-      <th>Price $</th>
+      <th>Цены</th>
       <th><%= sort_link(@search, :quantity, 'Кол') %></th>
       <th style="width: 16.66%">Image</th>
       <th>Parametr</th>
@@ -85,8 +85,7 @@
         <td><% if product.desc_en.present? %>есть<%else%>нет<%end%></td>
         <td><%= product.cat %></td>
         <td><%= product.oldprice %></td>
-        <td><%= product.price %></td>
-        <td><%= product.price_dollar %></td>
+        <td>Цена: <%= product.price %><br />Цена $: <%= product.price_dollar %><br />Цена Etsy: <%= product.price_etsy %></td>
         <td><%= product.quantity %></td>
         <td>
           <% if product.image.present? %>

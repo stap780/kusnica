@@ -32,6 +32,14 @@ class Product < ApplicationRecord
 		end
 	end
 
+  def self.ebay_process
+    products_ids = Product.ebay_products.map{ |a| a.id if a.price_dollar.present? }.reject(&:blank?)
+    file_type = "ebay_for_load"
+    filename = "complete_"+file_type+".csv"
+    Product.create_ebay_file( products_ids, file_type )
+    Services::Ebay.send_file( filename )
+  end
+
   def self.create_ebay_file(products, type)
 	  puts "Файл create_ebay_file"
 
@@ -120,7 +128,7 @@ class Product < ApplicationRecord
 
 	puts "Finish Файл create_ebay_file"
 
-	current_process = "создаём файл create_ebay_file"
+	current_process = "Finish создаём файл create_ebay_file"
 	ProductMailer.notifier_process(current_process).deliver_now
 
 	end

@@ -129,11 +129,7 @@ class ProductsController < ApplicationController
 
   def create_load_ebay_file
     if EbaySetup.first.present?
-      products_ids = Product.ebay_products.map{ |a| a.id if a.price_dollar.present? }.reject(&:blank?)
-      file_type = "ebay_for_load"
-      filename = "complete_"+file_type+".csv"
-      Product.create_ebay_file( products_ids, file_type )
-      Services::Ebay.send_file( filename )
+      Product.ebay_process #создаём файл и отправляем
       flash[:notice] = 'Задача запущена. Ожидайте письма о завершении'
       redirect_to products_path
     else
@@ -202,6 +198,6 @@ class ProductsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def product_params
-      params.require(:product).permit( :sku, :title, :desc, :title_en, :desc_en, :cat, :oldprice, :price, :price_dollar, :quantity, :image, :url, :parametr, :ins_id, :ins_var_id, :ebay_id, :etsy_id, :status_ebay, :status_etsy )
+      params.require(:product).permit( :sku, :title, :desc, :title_en, :desc_en, :cat, :oldprice, :price, :price_dollar, :price_etsy, :quantity, :image, :url, :parametr, :ins_id, :ins_var_id, :ebay_id, :etsy_id, :status_ebay, :status_etsy )
     end
 end

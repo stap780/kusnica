@@ -28,7 +28,7 @@ class Services::Etsy
       sku: product.ins_id,
       quantity: product.quantity,
       description: product.desc,
-      price: product.price_dollar,
+      price: product.price_etsy,
       who_made: 'i_did',
       when_made: '2020_2022',
       taxonomy_id: 2354,

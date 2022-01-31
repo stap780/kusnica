@@ -24,9 +24,12 @@ env "GEM_HOME", ENV["GEM_HOME"]
 set :output, "#{path}/log/cron.log"
 set :chronic_options, :hours24 => true
 
-every 1.day, :at => '19:30' do
+every 1.day, :at => '19:20' do
   runner "ImportProductJob.perform_later"
 end
-every 1.day, :at => '19:40' do
+every 1.day, :at => '19:30' do
   runner "ImportProductQuantityJob.perform_later"
+end
+every 1.day, :at => '19:50' do
+  runner "Product.ebay_process"
 end
