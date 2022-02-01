@@ -43,11 +43,11 @@ class Product < ApplicationRecord
   def self.create_ebay_file(products, type)
 	  puts "=====>>>> Файл create_ebay_file"+Time.now.to_s
 
-		file = "#{Rails.public_path}"+'/'+type+'.csv'
+		file = "#{Rails.public_path}/#{type}.csv"
 		check = File.file?(file)
 		File.delete(file) if check.present?
 
-    new_file = "#{Rails.public_path}"+'/complete_'+type+'.csv'
+    new_file = "#{Rails.public_path}/complete_#{type}.csv"
 		check_new_file = File.file?(new_file)
 		File.delete(new_file) if check_new_file.present?
 
@@ -130,7 +130,7 @@ class Product < ApplicationRecord
 
 	puts "=====>>>> Finish Файл create_ebay_file"+Time.now.to_s
 
-	current_process = "Finish создаём файл create_ebay_file #{Time.now.to_s} #{new_file}"
+	current_process = "Finish создаём файл create_ebay_file #{Time.now.to_s} #{type}.csv"
 	ProductMailer.notifier_process(current_process).deliver_now
 
 	end

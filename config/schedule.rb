@@ -33,3 +33,18 @@ end
 every 1.day, :at => '19:50' do
   runner "Product.ebay_process"
 end
+
+
+
+
+
+
+every 1.day, :at => '08:10' do
+  runner "ImportProductJob.perform_later"
+end
+every 1.day, :at => '08:20' do
+  runner "ImportProductQuantityJob.perform_later"
+end
+every 1.day, :at => '08:50' do
+  runner "Product.ebay_process"
+end
