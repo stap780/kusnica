@@ -41,7 +41,7 @@ class Product < ApplicationRecord
   end
 
   def self.create_ebay_file(products, type)
-	  puts "Файл create_ebay_file"
+	  puts "=====>>>> Файл create_ebay_file"+Time.now.to_s
 
 		file = "#{Rails.public_path}"+'/'+type+'.csv'
 		check = File.file?(file)
@@ -57,12 +57,12 @@ class Product < ApplicationRecord
 		CSV.open( file, 'w') do |writer|
       images = Array(1..10).map{|a| "Picture URL "+a.to_s}
       vparamHeader = []
-      parametrs = @products.where.not(parametr: nil).pluck(:parametr).reject(&:blank?)
-      parametrs.each do |p|
-  			p.split('---').each do |pa|
-  				vparamHeader << pa.split(':')[0].strip if pa != nil
-  			end
-  		end
+      parametrs = @products.where.not(parametr: nil).pluck(:parametr).reject(&:blank?).join('---')
+
+			parametrs.split('---').each do |pa|
+				vparamHeader << pa.split(':')[0].strip if pa != nil && !pa.include?('Выгрузить в Ebay') && !pa.include?('Выгрузить в Etsy')
+			end
+
       count_parametr = vparamHeader.uniq.count
       header_parametr = []
       Array(1..count_parametr).each do |a|
@@ -75,23 +75,23 @@ class Product < ApplicationRecord
   		writer << header
 
 		  @products.each do |pr|
-			title = pr.title.present? ? pr.title.strip : ''
-			images_pr = pr.image.present? ? pr.image.split(' ') : []
-      add_count = 10-images_pr.count
-      add_array = Array(1..add_count).map{|a| ""}
-      images = images_pr.count < 10 ? images_pr.concat(add_array) : images_pr.first(10)
+  			title = pr.title.present? ? pr.title.strip : ''
+  			images_pr = pr.image.present? ? pr.image.split(' ') : []
+        add_count = 10-images_pr.count
+        add_array = Array(1..add_count).map{|a| ""}
+        images = images_pr.count < 10 ? images_pr.concat(add_array) : images_pr.first(10)
 
-			price = pr.price_dollar.present? ? pr.price_dollar.to_s : '0'
-			quantity = pr.quantity.present? ?  pr.quantity : '0'
-			desc = pr.desc.present? ? pr.desc : ''
-			ins_id = pr.ins_id.present? ? pr.ins_id : pr.sku
-      channel_id = 'EBAY_US'
-      category = '20272'
-      ship_policy = 'Flat:Economy Shippi($14.00)/Flat:Economy Inte' #name from ebay policy
-      payment_policy = '1PayPal' #name from ebay policy
-      return_policy = 'Returns Accepted,Buyer,30 Days,Money Back,Int' #name from ebay policy
+  			price = pr.price_dollar.present? ? pr.price_dollar.to_s : '0'
+  			quantity = pr.quantity.present? ?  pr.quantity : '0'
+  			desc = pr.desc.present? ? pr.desc : ''
+  			ins_id = pr.ins_id.present? ? pr.ins_id : pr.sku
+        channel_id = 'EBAY_US'
+        category = '20272'
+        ship_policy = 'Flat:Economy Shippi($14.00)/Flat:Economy Inte' #name from ebay policy
+        payment_policy = '1PayPal' #name from ebay policy
+        return_policy = 'Returns Accepted,Buyer,30 Days,Money Back,Int' #name from ebay policy
 
-			writer << [ins_id, 'en_US', title, desc, 'NEW', price, quantity, channel_id, category, ship_policy, payment_policy, return_policy].concat(images)
+  			writer << [ins_id, 'en_US', title, desc, 'NEW', price, quantity, channel_id, category, ship_policy, payment_policy, return_policy].concat(images)
 
 			end
 		end #CSV.open
@@ -105,7 +105,7 @@ class Product < ApplicationRecord
 			csv_out << column_names
 			CSV.foreach(file, headers: true ) do |row|
 				ins_id = row[0]
-				puts ins_id
+				# puts ins_id
 				vel = Product.where(ins_id: ins_id).where.not(parametr: nil ).first
 	 			# Вид записи должен быть типа - "Длина рамы: 20 --- Ширина рамы: 30"
 				if vel.present?
@@ -126,9 +126,9 @@ class Product < ApplicationRecord
 		end
 
 
-	puts "Finish Файл create_ebay_file"
+	puts "=====>>>> Finish Файл create_ebay_file"+Time.now.to_s
 
-	current_process = "Finish создаём файл create_ebay_file"
+	current_process = "Finish создаём файл create_ebay_file #{Time.now.to_s}"
 	ProductMailer.notifier_process(current_process).deliver_now
 
 	end
