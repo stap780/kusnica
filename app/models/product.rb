@@ -130,7 +130,7 @@ class Product < ApplicationRecord
 
 	puts "=====>>>> Finish Файл create_ebay_file"+Time.now.to_s
 
-	current_process = "Finish создаём файл create_ebay_file #{Time.now.to_s}"
+	current_process = "Finish создаём файл create_ebay_file #{Time.now.to_s} #{new_file}"
 	ProductMailer.notifier_process(current_process).deliver_now
 
 	end
