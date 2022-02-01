@@ -110,14 +110,16 @@ class Product < ApplicationRecord
 	 			# Вид записи должен быть типа - "Длина рамы: 20 --- Ширина рамы: 30"
 				if vel.present?
   				vel.parametr.split('---').each_with_index do |vp, index|
-  					key_param_name = 'Attribute Name '+(index+1).to_s
-  					value_param_name = vp.split(':')[0].present? ? vp.split(':')[0].strip : ''
-  					# puts value_param_name
-  					row[key_param_name] = value_param_name
-            key_param_val = 'Attribute Value '+(index+1).to_s
-  					value_param_val = vp.split(':')[1].present? ? vp.split(':')[1].strip : ''
-  					# puts value_param_val
-  					row[key_param_val] = value_param_val
+            if !vp.include?('Выгрузить в Ebay') && !vp.include?('Выгрузить в Etsy')
+    					key_param_name = 'Attribute Name '+(index+1).to_s
+    					value_param_name = vp.split(':')[0].present? ? vp.split(':')[0].strip : ''
+    					# puts value_param_name
+    					row[key_param_name] = value_param_name
+              key_param_val = 'Attribute Value '+(index+1).to_s
+    					value_param_val = vp.split(':')[1].present? ? vp.split(':')[1].strip : ''
+    					# puts value_param_val
+    					row[key_param_val] = value_param_val
+            end
   				end
 				end
 # 				row['Полное описание'] = vel.desc.present? ? vel.desc.split().join : ''
