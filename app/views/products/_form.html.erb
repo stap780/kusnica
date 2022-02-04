@@ -24,7 +24,11 @@
     <%= f.input :ins_id, disabled: true  %>
     <%= f.input :ins_var_id, disabled: true  %>
     <%= f.input :ebay_id, disabled: true  %>
+    <% if current_user.admin? %>
+    <%= f.input :etsy_id  %>
+    <% else %>
     <%= f.input :etsy_id, disabled: true  %>
+    <% end %>
     </div>
     <div class="col-6">
       <% if @product.image.present? %>
