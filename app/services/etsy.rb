@@ -24,10 +24,10 @@ class Services::Etsy
     # puts product.etsy_id.is_a?String
     # puts "product.etsy_id.to_s - "+product.etsy_id.to_s
     data = {
-      title: product.title,
+      title: product.title_en,
       sku: product.ins_id,
       quantity: product.quantity,
-      description: product.desc,
+      description: product.desc_en,
       price: product.price_etsy,
       who_made: 'i_did',
       when_made: '2020_2022',
