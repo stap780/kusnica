@@ -6,9 +6,9 @@ class Product < ApplicationRecord
 	scope :all_product_size, -> { all_product.size }
 	scope :all_product_not_nil, -> { all_product.where('quantity >= ?', 1) }
 	scope :all_product_not_nil_size, -> { all_product_not_nil.size }
-  scope :ebay_products, -> {all_product.where(status_ebay: true).where.not(title_en: [nil, ''], desc_en: [nil, ''])}
-  scope :etsy_products, -> {all_product.where(status_etsy: true)}
-  scope :etsy_products_not_nil, -> {all_product_not_nil.where(status_etsy: true)}
+  scope :ebay_products, -> { all_product.where(status_ebay: true).where.not(title_en: [nil, ''], desc_en: [nil, '']) }
+  scope :etsy_products, -> { all_product.where(status_etsy: true).where.not(title_en: [nil, ''], desc_en: [nil, '']) }
+  scope :etsy_products_not_nil, -> { all_product_not_nil.where(status_etsy: true) }
 
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
