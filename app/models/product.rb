@@ -41,7 +41,7 @@ class Product < ApplicationRecord
   end
 
   def self.create_ebay_file(products, type)
-	  puts "=====>>>> Файл create_ebay_file"+Time.now.to_s
+	  puts "=====>>>> Файл create_ebay_file #{Time.now.to_s}"
 
 		file = "#{Rails.public_path}/#{type}.csv"
 		check = File.file?(file)
@@ -57,9 +57,9 @@ class Product < ApplicationRecord
 		CSV.open( file, 'w') do |writer|
       images = Array(1..10).map{|a| "Picture URL "+a.to_s}
       vparamHeader = []
-      parametrs = @products.where.not(parametr: nil).pluck(:parametr).reject(&:blank?).join('---')
+      parametrs = @products.where.not(parametr: nil).pluck(:parametr).join('---').split('---').reject(&:blank?).uniq
 
-			parametrs.split('---').each do |pa|
+			parametrs.each do |pa|
 				vparamHeader << pa.split(':')[0].strip if pa != nil && !pa.include?('Выгрузить в Ebay') && !pa.include?('Выгрузить в Etsy')
 			end
 
