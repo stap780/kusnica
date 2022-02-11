@@ -62,9 +62,9 @@
       <th>Desc En</th>
       <th>Cat</th>
       <th>Oldprice</th>
-      <th style="min-width: 110px;>Цены</th>
+      <th style="min-width: 110px;">Цены</th>
       <th><%= sort_link(@search, :quantity, 'Кол') %></th>
-      <th style="width: 16.66%">Image</th>
+      <th style="min-width: 150px;">Image</th>
       <th>Parametr</th>
       <th style="width: 16.66%">Insales</th>
       <th>Ebay</th>
@@ -89,7 +89,7 @@
         <td><%= product.quantity %></td>
         <td>
           <% if product.image.present? %>
-          <%= render 'image_gallery', :images => product.image.split(' ').first(4) %>
+          <%= render 'image_gallery', :images => product.image.split(' ').first(1), image_style: "col-lg-12 col-md-12 col-12" %>
          <% end %>
         </td>
         <td><%= product.parametr.truncate(45) if product.parametr.present? %></td>
