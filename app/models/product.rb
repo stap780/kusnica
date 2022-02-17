@@ -75,7 +75,7 @@ class Product < ApplicationRecord
   		writer << header
 
 		  @products.each do |pr|
-  			title = pr.title.present? ? pr.title.strip : ''
+  			title = pr.title_en.present? ? pr.title_en.strip : ''
   			images_pr = pr.image.present? ? pr.image.split(' ') : []
         add_count = 10-images_pr.count
         add_array = Array(1..add_count).map{|a| ""}
@@ -83,7 +83,7 @@ class Product < ApplicationRecord
 
   			price = pr.price_dollar.present? ? pr.price_dollar.to_s : '0'
   			quantity = pr.quantity.present? ?  pr.quantity : '0'
-  			desc = pr.desc.present? ? pr.desc : ''
+  			desc = pr.desc_en.present? ? pr.desc_en : ''
   			ins_id = pr.ins_id.present? ? pr.ins_id : pr.sku
         channel_id = 'EBAY_US'
         category = '20272'
